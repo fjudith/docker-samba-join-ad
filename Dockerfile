@@ -10,6 +10,7 @@ RUN set -x && \
     apt-get -y update && \
     apt-get -y --no-install-recommends install \
         crudini \
+        supervisor \
         krb5-user \
         libpam-krb5 \
         winbind \
@@ -21,6 +22,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN env --unset=DEBIAN_FRONTEND
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY assets/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 137 138 139 445
 

@@ -2,10 +2,12 @@
 # Reference:
 # * https://wiki.debian.org/AuthenticatingLinuxWithActiveDirectory
 # * https://wiki.samba.org/index.php/Troubleshooting_Samba_Domain_Members
+# * http://www.oreilly.com/openbook/samba/book/ch04_08.html
 
 set -e
 
 # Update loopback entry
+TZ=${TZ:-Etc/UTC}
 AD_USERNAME=${AD_USERNAME:-administrator}
 AD_PASSWORD=${AD_PASSWORD:-password}
 HOSTNAME=${HOSTNAME:-$(hostname)}
@@ -21,8 +23,8 @@ REALM=${REALM:-${DOMAIN_NAME^^}}
 PASSWORD_SERVER=${PASSWORD_SERVER:-${DOMAIN_NAME,,}}
 WORKGROUP=${WORKGROUP:-${DOMAIN_NAME^^}}
 WINBIND_SEPARATOR=${WINBIND_SEPARATOR:-"\\"}
-IDMAP_UID=${IDMAP_UID:-10000-20000}
-IDMAP_GID=${IDMAP_GID:-10000-20000}
+WINBIND_UID=${WINBIND_UID:-10000-20000}
+WINBIND_GID=${WINBIND_GID:-10000-20000}
 WINBIND_ENUM_USERS=${WINBIND_ENUM_USERS:-yes}
 WINBIND_ENUM_GROUPS=${WINBIND_ENUM_GROUPS:-yes}
 TEMPLATE_HOMEDIR=${TEMPLATE_HOMEDIR:-/home/%D/%U}
@@ -39,7 +41,9 @@ OS_LEVEL=${OS_LEVEL:-0}
 WINS_SUPPORT=${WINS_SUPPORT:-no}
 WINS_SERVER=${WINS_SERVER:-127.0.0.1}
 DNS_PROXY=${DNS_PROXY:-no}
-LOG_FILE=${LOG_FILE:-/var/log/samba/log.%m}
+LOG_LEVEL=${LOG_LEVEL:-1}
+DEBUG_TIMESTAMP=${DEBUG_TIMESTAMP:-yes}
+LOG_FILE=${LOG_FILE:-/var/log/samba/%m.log}
 MAX_LOG_SIZE=${MAX_LOG_SIZE:-1000}
 SYSLOG_ONLY=${SYSLOG_ONLY:-no}
 SYSLOG=${SYSLOG:-0}
@@ -48,11 +52,9 @@ PANIC_ACTION=${PANIC_ACTION:-/usr/share/samba/panic-action %d}
 
 SAMBA_CONF=/etc/samba/smb.conf
 
-# Below not working as of Docker 1.1.0
-# Ref: https://forums.docker.com/t/container-losing-volume-etc-hosts-when-file-is-edited/10038/3
-# sed -i "s#^\(127\.0\.0\.1\s*locahost\).*\$#\1 $HOSTNAME $HOSTNAME.$DOMAIN_NAME#" /etc/hosts
-#
-# Instead Use docker run --add-host $(hostname).domain.loc:127.0.0.1 --add-host $(hostname):127.0.0.1 alpine
+# Setting Timezone 
+echo $TZ | tee /etc/Timezone
+dpkg-reconfigure --frontend noninteractive tzdata
 
 
 # Initialize Kerberos authentication
@@ -102,8 +104,8 @@ crudini --set $SAMBA_CONF global "realm" "$REALM"
 crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 #crudini --set $SAMBA_CONF global "winbind separator" "$WINBIND_SEPARATOR"
-crudini --set $SAMBA_CONF global "idmap uid" "$IDMAP_UID"
-crudini --set $SAMBA_CONF global "idmap gid" "$IDMAP_GID"
+crudini --set $SAMBA_CONF global "winbind uid" "$WINBIND_UID"
+crudini --set $SAMBA_CONF global "winbind gid" "$WINBIND_GID"
 crudini --set $SAMBA_CONF global "winbind enum users" "$WINBIND_ENUM_USERS"
 crudini --set $SAMBA_CONF global "winbind enum groups" "$WINBIND_ENUM_GROUPS"
 crudini --set $SAMBA_CONF global "template homedir" "$TEMPLATE_HOMEDIR"
@@ -120,11 +122,20 @@ crudini --set $SAMBA_CONF global "os level" "$OS_LEVEL"
 crudini --set $SAMBA_CONF global "wins support" "$WINS_SUPPORT"
 crudini --set $SAMBA_CONF global "wins server" "$WINS_SERVER"
 crudini --set $SAMBA_CONF global "dns proxy" "$DNS_PROXY"
+crudini --set $SAMBA_CONF global "log level" "$LOG_LEVEL"
+crudini --set $SAMBA_CONF global "debug timestamp" "$DEBUG_TIMESTAMP"
 crudini --set $SAMBA_CONF global "log file" "$LOG_FILE"
 crudini --set $SAMBA_CONF global "max log size" "$MAX_LOG_SIZE"
 crudini --set $SAMBA_CONF global "syslog only" "$SYSLOG_ONLY"
 crudini --set $SAMBA_CONF global "syslog" "$SYSLOG"
 crudini --set $SAMBA_CONF global "panic action" "$PANIC_ACTION"
+
+crudini --set $SAMBA_CONF profiles "comment " "User profiles"
+crudini --set $SAMBA_CONF profiles "path " "/home/samba/profiles"
+crudini --set $SAMBA_CONF profiles "guest ok" "no"
+crudini --set $SAMBA_CONF profiles "browseable" "no"
+crudini --set $SAMBA_CONF profiles "create mask" "0600"
+crudini --set $SAMBA_CONF profiles "directory mask" "0700"
 
 /etc/init.d/winbind stop
 /etc/init.d/samba restart
@@ -142,3 +153,13 @@ echo --------------------------------------------------
 echo 'Regestering to Active Directory'
 echo --------------------------------------------------
 net ads join -U $AD_USERNAME%$AD_PASSWORD
+
+echo --------------------------------------------------
+echo 'Stopping Samba to enable handling by supervisord'
+echo --------------------------------------------------
+/etc/init.d/samba stop
+
+echo --------------------------------------------------
+echo 'Restarting Samba using supervisord'
+echo --------------------------------------------------
+/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
