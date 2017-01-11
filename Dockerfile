@@ -22,6 +22,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN env --unset=DEBIAN_FRONTEND
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 COPY assets/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 137 138 139 445

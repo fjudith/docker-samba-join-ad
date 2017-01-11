@@ -22,3 +22,4 @@ docker run -it --rm --add-host "docker-smb.localdomain.loc docker-smb":<host ip 
 -p 445:445/tcp \
 fjudith/samba-join-ad
 ```
+
