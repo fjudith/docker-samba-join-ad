@@ -24,3 +24,7 @@ docker run -it --rm --add-host "docker-smb.localdomain.loc docker-smb":<host ip 
 fjudith/samba-join-ad
 ```
 
+# Reference
+
+* https://wiki.debian.org/AuthenticatingLinuxWithActiveDirectory
+* https://github.com/docker/docker/issues/12084
