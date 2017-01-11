@@ -11,6 +11,7 @@ Run the Samba image.
 ```shell
 docker run -it --rm --add-host "docker-smb.localdomain.loc docker-smb":<host ip address> \
 --hostname docker-smb \
+-e TZ=Etc/UTC
 -e DOMAIN_NAME=localdomain.loc \
 -e ADMIN_SERVER=dc1.localdomain.loc \
 -e WORKGROUP=localdomain \

@@ -53,7 +53,7 @@ PANIC_ACTION=${PANIC_ACTION:-/usr/share/samba/panic-action %d}
 SAMBA_CONF=/etc/samba/smb.conf
 
 # Setting Timezone 
-echo $TZ | tee /etc/Timezone
+echo $TZ | tee /etc/timezone
 dpkg-reconfigure --frontend noninteractive tzdata
 
 
