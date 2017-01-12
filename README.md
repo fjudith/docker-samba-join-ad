@@ -29,3 +29,4 @@ fjudith/samba-join-ad
 * https://wiki.debian.org/AuthenticatingLinuxWithActiveDirectory
 * https://github.com/docker/docker/issues/12084
 * http://www.enterprisenetworkingplanet.com/windows/article.php/3849061/Use-Samba-With-Windows-7-Clients.htm
+* https://wiki.samba.org/index.php/Setting_up_a_Share_Using_Windows_ACLs

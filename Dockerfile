@@ -14,10 +14,14 @@ RUN set -x && \
         krb5-user \
         libpam-krb5 \
         winbind \
+        libnss-winbind \
         libpam-mount \
         cifs-utils
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN mkdir -p /home/samba/profiles \
+    chmod g+rwx /home/samba/profiles
 
 RUN env --unset=DEBIAN_FRONTEND
 
