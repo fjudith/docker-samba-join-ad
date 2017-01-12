@@ -63,7 +63,9 @@ if [[ ! -f /etc/krb5.conf.original ]]; then
 fi
 echo "
 [logging]
-    Default = FILE:/var/log/krb5.log
+    default = FILE:/var/krb5/kdc.log 
+    kdc = FILE:/var/krb5/kdc.log 
+    admin_server = FILE:/var/log/kadmind.log
 
 [libdefaults]
 	default_realm = ${DOMAIN_NAME^^}
