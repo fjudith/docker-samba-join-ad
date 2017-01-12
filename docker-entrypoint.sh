@@ -141,6 +141,11 @@ crudini --set $SAMBA_CONF profiles "browseable" "no"
 crudini --set $SAMBA_CONF profiles "create mask" "0600"
 crudini --set $SAMBA_CONF profiles "directory mask" "0700"
 
+# Update nsswitch.conf with Winbind
+sed -i "s#^\(passwd\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+sed -i "s#^\(group\:\s*compat\)\$#\1 twinbind#" /etc/nsswitch.conf
+sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+
 /etc/init.d/winbind stop
 /etc/init.d/samba restart
 /etc/init.d/winbind start
