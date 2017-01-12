@@ -99,6 +99,10 @@ if [[ ! -f /etc/samba/smb.conf.original ]]; then
 	touch $SAMBA_CONF
 fi
 
+crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
+crudini --set $SAMBA_CONF global "map acl inherit" "yes"
+crudini --set $SAMBA_CONF global "store dos attributes" "yes"
+
 crudini --set $SAMBA_CONF global "security" "$SECURITY"
 crudini --set $SAMBA_CONF global "realm" "$REALM"
 crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
