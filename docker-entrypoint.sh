@@ -48,6 +48,15 @@ MAX_LOG_SIZE=${MAX_LOG_SIZE:-1000}
 SYSLOG_ONLY=${SYSLOG_ONLY:-no}
 SYSLOG=${SYSLOG:-0}
 PANIC_ACTION=${PANIC_ACTION:-/usr/share/samba/panic-action %d}
+HOSTS_ALLOW=${HOSTS_ALLOW:-*}
+SOCKET_OPTIONS=${SOCKET_OPTIONS:-TCP_NODELAY SO_KEEPALIVE SO_RCVBUF=17520 SO_SNDBUF=17520 IPTOS_LOWDELAY}
+READ_RAW=${READ_RAW:-yes}
+WRITE_RAW=${WRITE_RAW:-yes}
+OPLOCKS=${OPLOCKS:-no}
+LEVEL2_OPLOCKS=${LEVEL2_OPLOCKS:-no}
+KERNEL_OPLOCKS=${KERNEL_OPLOCKS:-yes}
+MAX_XMIT=${MAX_XMIT:-65535}
+DEAD_TIME=${DEAD_TIME:-15}
 
 
 SAMBA_CONF=/etc/samba/smb.conf
@@ -146,6 +155,16 @@ crudini --set $SAMBA_CONF global "max log size" "$MAX_LOG_SIZE"
 crudini --set $SAMBA_CONF global "syslog only" "$SYSLOG_ONLY"
 crudini --set $SAMBA_CONF global "syslog" "$SYSLOG"
 crudini --set $SAMBA_CONF global "panic action" "$PANIC_ACTION"
+crudini --set $SAMBA_CONF global "hosts allow" "$HOSTS_ALLOW"
+crudini --set $SAMBA_CONF global "socket options" "$SOCKET_OPTIONS"
+crudini --set $SAMBA_CONF global "read raw" "$READ_RAW"
+crudini --set $SAMBA_CONF global "write raw" "$WRITE_RAW"
+crudini --set $SAMBA_CONF global "oplocks" "$OPLOCKS"
+crudini --set $SAMBA_CONF global "level2 oplocks" "$LEVEL2_OPLOCKS"
+crudini --set $SAMBA_CONF global "kernel oplocks" "$KERNEL_OPLOCKS"
+crudini --set $SAMBA_CONF global "max xmit" "$MAX_XMIT"
+crudini --set $SAMBA_CONF global "dead time" "$DEAD_TIME"
+
 
 # Disable printing error log messages when CUPS is not installed.
 crudini --set $SAMBA_CONF global "printcap name" "/etc/printcap"
