@@ -157,8 +157,8 @@ crudini --set $SAMBA_CONF global "idmap uid" "$WINBIND_UID"
 crudini --set $SAMBA_CONF global "idmap gid" "$WINBIND_GID"
 
 # no .tld
-crudini --set $SAMBA_CONF global "idmap config $WORKGROUP:backend" "rid"
-crudini --set $SAMBA_CONF global "idmap config $WORKGROUP:range" "$WINBIND_UID"
+crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:backend" "rid"
+crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:range" "$WINBIND_UID"
 
 # Inherit groups in groups
 crudini --set $SAMBA_CONF global "winbind nested groups" "yes"
@@ -191,6 +191,8 @@ sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
 /etc/init.d/winbind start
 
 sleep 5
+
+testparm -v
 
 echo --------------------------------------------------
 echo 'Generating Kerberos ticket'
