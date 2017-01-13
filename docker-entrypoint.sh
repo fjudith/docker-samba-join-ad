@@ -192,12 +192,17 @@ crudini --set $SAMBA_CONF global "encrypt passwords" "yes"
 crudini --set $SAMBA_CONF global "restrict anonymous" "2"
 
 
-crudini --set $SAMBA_CONF profiles "comment " "User profiles"
-crudini --set $SAMBA_CONF profiles "path " "/home/samba/profiles"
-crudini --set $SAMBA_CONF profiles "guest ok" "no"
-crudini --set $SAMBA_CONF profiles "browseable" "no"
-crudini --set $SAMBA_CONF profiles "create mask" "0600"
-crudini --set $SAMBA_CONF profiles "directory mask" "0700"
+crudini --set $SAMBA_CONF home "comment" "Home Directories"
+crudini --set $SAMBA_CONF home "path" "/home/"
+crudini --set $SAMBA_CONF home "public" "yes"
+crudini --set $SAMBA_CONF home "guest ok" "no"
+crudini --set $SAMBA_CONF home "read only" "no"
+crudini --set $SAMBA_CONF home "writeable" "yes"
+crudini --set $SAMBA_CONF home "create mask" "0777"
+crudini --set $SAMBA_CONF home "directory mask" "0777"
+crudini --set $SAMBA_CONF home "browseable" "no"
+crudini --set $SAMBA_CONF home "printable" "no"
+crudini --set $SAMBA_CONF home "oplocks" "yes"
 
 
 # Update nsswitch.conf with Winbind
