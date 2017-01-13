@@ -72,8 +72,8 @@ echo "
     ticket_lifetime = 24h
     clock-skew = 300
     forwardable = true
-    default_tkt_enctypes = ${ENCRYPTION_TYPES}
-    default_tgs_enctypes = ${ENCRYPTION_TYPES}
+#   default_tkt_enctypes = ${ENCRYPTION_TYPES}
+#   default_tgs_enctypes = ${ENCRYPTION_TYPES}
 #   dns_lookup_realm = false
 #   dns_lookup_kdc = true
 
