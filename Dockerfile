@@ -23,8 +23,7 @@ RUN set -x && \
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p /home/samba/profiles \
-    chmod g+rwx /home/samba/profiles
+RUN chmod g+rwx /home
 
 RUN env --unset=DEBIAN_FRONTEND
 
