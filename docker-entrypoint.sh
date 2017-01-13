@@ -23,8 +23,8 @@ REALM=${REALM:-${DOMAIN_NAME^^}}
 PASSWORD_SERVER=${PASSWORD_SERVER:-${DOMAIN_NAME,,}}
 WORKGROUP=${WORKGROUP:-${DOMAIN_NAME^^}}
 WINBIND_SEPARATOR=${WINBIND_SEPARATOR:-"\\"}
-WINBIND_UID=${WINBIND_UID:-10000-20000}
-WINBIND_GID=${WINBIND_GID:-10000-20000}
+WINBIND_UID=${WINBIND_UID:-10000-99999}
+WINBIND_GID=${WINBIND_GID:-10000-99999}
 WINBIND_ENUM_USERS=${WINBIND_ENUM_USERS:-yes}
 WINBIND_ENUM_GROUPS=${WINBIND_ENUM_GROUPS:-yes}
 TEMPLATE_HOMEDIR=${TEMPLATE_HOMEDIR:-/home/%D/%U}
@@ -69,21 +69,20 @@ echo "
 
 [libdefaults]
 	default_realm = ${DOMAIN_NAME^^}
-    ticket_lifetime = 24000
+    ticket_lifetime = 24h
     clock-skew = 300
+    forwardable = true
     default_tkt_enctypes = ${ENCRYPTION_TYPES}
     default_tgs_enctypes = ${ENCRYPTION_TYPES}
 #   dns_lookup_realm = false
 #   dns_lookup_kdc = true
 
-[realms]
     ${DOMAIN_NAME^^} = {
         kdc = ${KDC_SERVER,,}:88
         admin_server = ${ADMIN_SERVER,,}:464
         default_domain = ${DOMAIN_NAME,,}       
 }
 
-[realms]
     ${DOMAIN_NAME,,} = {
         kdc = ${KDC_SERVER,,}:88
         admin_server = ${ADMIN_SERVER,,}:464
@@ -93,6 +92,18 @@ echo "
 [domain_realm]
     .${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
     ${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
+
+[kdc]
+  profile = /etc/krb5kdc/kdc.conf
+
+[appdefaults]
+  pam = {
+    debug = false
+    ticket_lifetime = 36000
+    renew_lifetime = 36000
+    forwardable = true
+    krb4_convert = false
+}
 " > /etc/krb5.conf
 
 # Rename original smb.conf
@@ -107,11 +118,12 @@ crudini --set $SAMBA_CONF global "store dos attributes" "yes"
 
 crudini --set $SAMBA_CONF global "security" "$SECURITY"
 crudini --set $SAMBA_CONF global "realm" "$REALM"
-crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
+#crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 #crudini --set $SAMBA_CONF global "winbind separator" "$WINBIND_SEPARATOR"
 crudini --set $SAMBA_CONF global "winbind uid" "$WINBIND_UID"
 crudini --set $SAMBA_CONF global "winbind gid" "$WINBIND_GID"
+crudini --set $SAMBA_CONF global "winbind use default domain" "$WINDBIND_USE_DEFAULT_DOMAIN"
 crudini --set $SAMBA_CONF global "winbind enum users" "$WINBIND_ENUM_USERS"
 crudini --set $SAMBA_CONF global "winbind enum groups" "$WINBIND_ENUM_GROUPS"
 crudini --set $SAMBA_CONF global "template homedir" "$TEMPLATE_HOMEDIR"
@@ -119,7 +131,6 @@ crudini --set $SAMBA_CONF global "template shell" "$TEMPLATE_SHELL"
 crudini --set $SAMBA_CONF global "client use spnego" "$CLIENT_USE_SPNEGO"
 crudini --set $SAMBA_CONF global "client ntlmv2 auth" "$CLIENT_NTLMV2_AUTH"
 crudini --set $SAMBA_CONF global "encrypt passwords" "$ENCRYPT_PASSWORDS"
-crudini --set $SAMBA_CONF global "winbind use default domain" "$WINDBIND_USE_DEFAULT_DOMAIN"
 crudini --set $SAMBA_CONF global "restrict anonymous" "$RESTRICT_ANONYMOUS"
 crudini --set $SAMBA_CONF global "domain master" "$DOMAIN_MASTER"
 crudini --set $SAMBA_CONF global "local master" "$LOCAL_MASTER"
@@ -136,12 +147,39 @@ crudini --set $SAMBA_CONF global "syslog only" "$SYSLOG_ONLY"
 crudini --set $SAMBA_CONF global "syslog" "$SYSLOG"
 crudini --set $SAMBA_CONF global "panic action" "$PANIC_ACTION"
 
+# Disable printing error log messages when CUPS is not installed.
+crudini --set $SAMBA_CONF global "printcap name" "/etc/printcap"
+crudini --set $SAMBA_CONF global "panic action" "no"
+
+# Works both in samba 3.2 and 3.6.
+crudini --set $SAMBA_CONF global "idmap backend" "tdb"
+crudini --set $SAMBA_CONF global "idmap uid" "$WINBIND_UID"
+crudini --set $SAMBA_CONF global "idmap gid" "$WINBIND_GID"
+
+# no .tld
+crudini --set $SAMBA_CONF global "idmap config $WORKGROUP:backend" "rid"
+crudini --set $SAMBA_CONF global "idmap config $WORKGROUP:range" "$WINBIND_UID"
+
+# Inherit groups in groups
+crudini --set $SAMBA_CONF global "winbind nested groups" "yes"
+crudini --set $SAMBA_CONF global "winbind refresh tickets" "yes"
+crudini --set $SAMBA_CONF global "winbind offline logon" "true"
+
+# No shell access
+crudini --set $SAMBA_CONF global "template shell" "/bin/false"
+crudini --set $SAMBA_CONF global "client use spnego" "yes"
+crudini --set $SAMBA_CONF global "client ntlmv2 auth" "yes"
+crudini --set $SAMBA_CONF global "encrypt passwords" "yes"
+crudini --set $SAMBA_CONF global "restrict anonymous" "2"
+
+
 crudini --set $SAMBA_CONF profiles "comment " "User profiles"
 crudini --set $SAMBA_CONF profiles "path " "/home/samba/profiles"
 crudini --set $SAMBA_CONF profiles "guest ok" "no"
 crudini --set $SAMBA_CONF profiles "browseable" "no"
 crudini --set $SAMBA_CONF profiles "create mask" "0600"
 crudini --set $SAMBA_CONF profiles "directory mask" "0700"
+
 
 # Update nsswitch.conf with Winbind
 sed -i "s#^\(passwd\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf

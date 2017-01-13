@@ -18,7 +18,8 @@ RUN set -x && \
         winbind \
         libnss-winbind \
         libpam-mount \
-        cifs-utils
+        cifsutils \
+        samba-client
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
