@@ -192,7 +192,7 @@ sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
 
 sleep 5
 
-testparm -v
+testparm -s
 
 echo --------------------------------------------------
 echo 'Generating Kerberos ticket'
