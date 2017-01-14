@@ -18,6 +18,8 @@ KDC_SERVER=${KDC_SERVER:-${ADMIN_SERVER,,}}
 PASSWORD_SERVER=${PASSWORD_SERVER:-${ADMIN_SERVER,,}}
 
 ENCRYPTION_TYPES=${ENCRYPTION_TYPES:-rc4-hmac des3-hmac-sha1 des-cbc-crc arcfour-hmac aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 des-cbc-md5}
+
+SERVER_STRING=${SERVER_STRING:-Samba Server Version %v}
 SECURITY=${SECURITY:-ads}
 REALM=${REALM:-${DOMAIN_NAME^^}}
 PASSWORD_SERVER=${PASSWORD_SERVER:-${DOMAIN_NAME,,}}
@@ -32,6 +34,7 @@ TEMPLATE_SHELL=${TEMPLATE_SHELL:-/bin/bash}
 CLIENT_USE_SPNEGO=${CLIENT_USE_SPNEGO:-yes}
 CLIENT_NTLMV2_AUTH=${CLIENT_NTLMV2_AUTH:-yes}
 ENCRYPT_PASSWORDS=${ENCRYPT_PASSWORDS:-yes}
+SERVER_SIGNING=${SERVER_SIGNING:-mandatory}
 WINDBIND_USE_DEFAULT_DOMAIN=${WINBIND_USE_DEFAULT_DOMAIN:-yes}
 RESTRICT_ANONYMOUS=${RESTRICT_ANONYMOUS:-2}
 DOMAIN_MASTER=${DOMAIN_MASTER:-no}
@@ -57,7 +60,6 @@ LEVEL2_OPLOCKS=${LEVEL2_OPLOCKS:-no}
 KERNEL_OPLOCKS=${KERNEL_OPLOCKS:-yes}
 MAX_XMIT=${MAX_XMIT:-65535}
 DEAD_TIME=${DEAD_TIME:-15}
-
 
 SAMBA_CONF=/etc/samba/smb.conf
 
@@ -121,6 +123,7 @@ if [[ ! -f /etc/samba/smb.conf.original ]]; then
 	touch $SAMBA_CONF
 fi
 
+crudini --set $SAMBA_CONF global "server string" "$SERVER_STRING"
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"
 crudini --set $SAMBA_CONF global "store dos attributes" "yes"
@@ -140,6 +143,7 @@ crudini --set $SAMBA_CONF global "template shell" "$TEMPLATE_SHELL"
 crudini --set $SAMBA_CONF global "client use spnego" "$CLIENT_USE_SPNEGO"
 crudini --set $SAMBA_CONF global "client ntlmv2 auth" "$CLIENT_NTLMV2_AUTH"
 crudini --set $SAMBA_CONF global "encrypt passwords" "$ENCRYPT_PASSWORDS"
+crudini --set $SAMBA_CONF global "server signing" "$SERVER_SIGNING"
 crudini --set $SAMBA_CONF global "restrict anonymous" "$RESTRICT_ANONYMOUS"
 crudini --set $SAMBA_CONF global "domain master" "$DOMAIN_MASTER"
 crudini --set $SAMBA_CONF global "local master" "$LOCAL_MASTER"
