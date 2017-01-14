@@ -223,9 +223,9 @@ crudini --set $SAMBA_CONF home "oplocks" "yes"
 
 
 # Update nsswitch.conf with Winbind
-sed -i "s#^\(passwd\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
-sed -i "s#^\(group\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
-sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+sed -i "s#^\(passwd\:\s*compat\)\$#\1 files winbind#" /etc/nsswitch.conf
+sed -i "s#^\(group\:\s*compat\)\$#\1 files winbind#" /etc/nsswitch.conf
+sed -i "s#^\(shadow\:\s*compat\)\$#\1 files winbind#" /etc/nsswitch.conf
 
 /etc/init.d/winbind stop
 /etc/init.d/samba restart
@@ -245,6 +245,8 @@ echo --------------------------------------------------
 echo 'Regestering to Active Directory'
 echo --------------------------------------------------
 net ads join -U $AD_USERNAME%$AD_PASSWORD
+wbinfo --ping-dc
+pam-auth-update
 
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
