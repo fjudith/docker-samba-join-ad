@@ -130,7 +130,7 @@ crudini --set $SAMBA_CONF global "store dos attributes" "yes"
 
 crudini --set $SAMBA_CONF global "security" "$SECURITY"
 crudini --set $SAMBA_CONF global "realm" "$REALM"
-crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
+#crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 #crudini --set $SAMBA_CONF global "winbind separator" "$WINBIND_SEPARATOR"
 crudini --set $SAMBA_CONF global "winbind uid" "$WINBIND_UID"
@@ -175,13 +175,13 @@ crudini --set $SAMBA_CONF global "printcap name" "/etc/printcap"
 crudini --set $SAMBA_CONF global "panic action" "no"
 
 # Works both in samba 3.2 and 3.6.
-crudini --set $SAMBA_CONF global "idmap backend" "tdb"
-crudini --set $SAMBA_CONF global "idmap uid" "$WINBIND_UID"
-crudini --set $SAMBA_CONF global "idmap gid" "$WINBIND_GID"
+#crudini --set $SAMBA_CONF global "idmap backend" "tdb"
+#crudini --set $SAMBA_CONF global "idmap uid" "$WINBIND_UID"
+#crudini --set $SAMBA_CONF global "idmap gid" "$WINBIND_GID"
 
 # no .tld
-crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:backend" "rid"
-crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:range" "$WINBIND_UID"
+#crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:backend" "rid"
+#crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:range" "$WINBIND_UID"
 
 # Inherit groups in groups
 crudini --set $SAMBA_CONF global "winbind nested groups" "yes"
