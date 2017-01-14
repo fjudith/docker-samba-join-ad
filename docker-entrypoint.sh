@@ -6,6 +6,10 @@
 
 set -e
 
+GUEST_USERNAME=${GUEST_USERNAME:-ftp}
+GUEST_PASSWORD=${GUEST_PASSWORD:-V3ry1nS3cur3P4ss0rd}
+
+TZ=${TZ:-Etc/UTC}
 # Update loopback entry
 TZ=${TZ:-Etc/UTC}
 AD_USERNAME=${AD_USERNAME:-administrator}
@@ -117,11 +121,20 @@ echo "
 }
 " > /etc/krb5.conf
 
-# Rename original smb.conf
 if [[ ! -f /etc/samba/smb.conf.original ]]; then
-	mv /etc/samba/smb.conf /etc/samba/smb.conf.original
-	touch $SAMBA_CONF
+    mv /etc/samba/smb.conf /etc/samba/smb.conf.original
+    touch $SAMBA_CONF
 fi
+
+echo --------------------------------------------------
+echo "Setting up guest user credential: \"$GUEST_USERNAME\""
+echo --------------------------------------------------
+if [[ ! `grep $GUEST_USERNAME /etc/passwd` ]]; then
+    useradd $GUEST_USERNAME
+fi
+echo $GUEST_PASSWORD | tee - | smbpasswd -a -s $GUEST_USERNAME
+
+crudini --set $SAMBA_CONF global "guest account" "$GUEST_USERNAME"
 
 crudini --set $SAMBA_CONF global "server string" "$SERVER_STRING"
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
