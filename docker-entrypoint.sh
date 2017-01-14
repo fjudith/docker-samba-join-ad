@@ -52,7 +52,7 @@ SYSLOG_ONLY=${SYSLOG_ONLY:-no}
 SYSLOG=${SYSLOG:-0}
 PANIC_ACTION=${PANIC_ACTION:-/usr/share/samba/panic-action %d}
 HOSTS_ALLOW=${HOSTS_ALLOW:-*}
-SOCKET_OPTIONS=${SOCKET_OPTIONS:-TCP_NODELAY SO_KEEPALIVE SO_RCVBUF=17520 SO_SNDBUF=17520 IPTOS_LOWDELAY}
+SOCKET_OPTIONS=${SOCKET_OPTIONS:-TCP_NODELAY SO_KEEPALIVE IPTOS_LOWDELAY}
 READ_RAW=${READ_RAW:-yes}
 WRITE_RAW=${WRITE_RAW:-yes}
 OPLOCKS=${OPLOCKS:-no}
@@ -130,7 +130,7 @@ crudini --set $SAMBA_CONF global "store dos attributes" "yes"
 
 crudini --set $SAMBA_CONF global "security" "$SECURITY"
 crudini --set $SAMBA_CONF global "realm" "$REALM"
-#crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
+crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 #crudini --set $SAMBA_CONF global "winbind separator" "$WINBIND_SEPARATOR"
 crudini --set $SAMBA_CONF global "winbind uid" "$WINBIND_UID"
