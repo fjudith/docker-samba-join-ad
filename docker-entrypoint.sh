@@ -248,7 +248,7 @@ net ads join -U $AD_USERNAME%$AD_PASSWORD
 /etc/init.d/winbind stop
 /etc/init.d/samba restart
 /etc/init.d/winbind start
-wbinfo --ping-dc
+
 pam-auth-update
 
 echo --------------------------------------------------
