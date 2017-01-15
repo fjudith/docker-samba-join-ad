@@ -223,9 +223,9 @@ crudini --set $SAMBA_CONF home "oplocks" "yes"
 
 
 # Update nsswitch.conf with Winbind
-sed -i "s#^\(passwd\:\s*compat\)\$#\1 files winbind#" /etc/nsswitch.conf
-sed -i "s#^\(group\:\s*compat\)\$#\1 files winbind#" /etc/nsswitch.conf
-sed -i "s#^\(shadow\:\s*compat\)\$#\1 files winbind#" /etc/nsswitch.conf
+sed -i "s#^\(passwd\:\s*compat\)\$#files winbind#" /etc/nsswitch.conf
+sed -i "s#^\(group\:\s*compat\)\$#files winbind#" /etc/nsswitch.conf
+sed -i "s#^\(shadow\:\s*compat\)\$#files winbind#" /etc/nsswitch.conf
 
 /etc/init.d/winbind stop
 /etc/init.d/samba restart
