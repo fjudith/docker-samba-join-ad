@@ -247,7 +247,7 @@ crudini --set $SAMBA_CONF home "valid users" "%S"
 # sleep 5
 
 testparm -s
-ls -l /etc/init.d/
+
 # echo --------------------------------------------------
 # echo 'Generating Kerberos ticket'
 # echo --------------------------------------------------
