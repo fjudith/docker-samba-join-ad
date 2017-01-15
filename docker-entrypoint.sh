@@ -144,6 +144,9 @@ crudini --set $SAMBA_CONF global "printcap name" "/dev/null"
 crudini --set $SAMBA_CONF global "panic action" "no"
 crudini --set $SAMBA_CONF global "cups options" "raw"
 
+# Name resolution order
+crudini --set $SAMBA_CONF global "name resolve order" "$NAME_RESOLVE_ORDER"
+
 # Performance Tuning
 # crudini --set $SAMBA_CONF global "socket options" "$SOCKET_OPTIONS"
 # crudini --set $SAMBA_CONF global "read raw" "$READ_RAW"
