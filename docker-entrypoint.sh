@@ -193,8 +193,8 @@ crudini --set $SAMBA_CONF global "panic action" "no"
 #crudini --set $SAMBA_CONF global "idmap gid" "$WINBIND_GID"
 
 # no .tld
-crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:backend" "rid"
-crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:range" "$WINBIND_UID"
+#crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:backend" "rid"
+#crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:range" "$WINBIND_UID"
 
 # Inherit groups in groups
 crudini --set $SAMBA_CONF global "winbind nested groups" "yes"
