@@ -23,6 +23,8 @@ PASSWORD_SERVER=${PASSWORD_SERVER:-${ADMIN_SERVER,,}}
 
 ENCRYPTION_TYPES=${ENCRYPTION_TYPES:-rc4-hmac des3-hmac-sha1 des-cbc-crc arcfour-hmac aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 des-cbc-md5}
 
+NAME_RESOLVE_ORDER=${NAME_RESOLVE_ORDER:-host bcast}
+
 SERVER_STRING=${SERVER_STRING:-Samba Server Version %v}
 SECURITY=${SECURITY:-ads}
 REALM=${REALM:-${DOMAIN_NAME^^}}
