@@ -9,20 +9,22 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN set -x && \
     apt-get -y update && \
     apt-get -y install \
-    #apt-get -y --no-install-recommends install \
+        sssd \
         vim \
         nano \
         crudini \
-        supervisor \
-        krb5-user \
-        libpam-krb5 \
-        winbind \
-        libnss-winbind \
-        libpam-mount \
-        cifs-utils \
-        samba-client
+        dbus \
+        realmd \
+        adcli \
+        samba-common-bin \
+        samba \
+        sssd-tools \
+        supervisor
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN mkdir -p /var/lib/samba/private && \
+    systemctl enable sssd
 
 RUN chmod g+rwx /home
 
