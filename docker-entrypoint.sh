@@ -40,7 +40,8 @@ TEMPLATE_SHELL=${TEMPLATE_SHELL:-/bin/bash}
 CLIENT_USE_SPNEGO=${CLIENT_USE_SPNEGO:-yes}
 CLIENT_NTLMV2_AUTH=${CLIENT_NTLMV2_AUTH:-yes}
 ENCRYPT_PASSWORDS=${ENCRYPT_PASSWORDS:-yes}
-SERVER_SIGNING=${SERVER_SIGNING:-mandatory}
+SERVER_SIGNING=${SERVER_SIGNING:-auto}
+SMB_ENCRYPT=${SMB_ENCRYPT:-auto}
 WINDBIND_USE_DEFAULT_DOMAIN=${WINBIND_USE_DEFAULT_DOMAIN:-yes}
 RESTRICT_ANONYMOUS=${RESTRICT_ANONYMOUS:-2}
 DOMAIN_MASTER=${DOMAIN_MASTER:-no}
@@ -176,6 +177,7 @@ crudini --set $SAMBA_CONF global "client use spnego" "$CLIENT_USE_SPNEGO"
 crudini --set $SAMBA_CONF global "client ntlmv2 auth" "$CLIENT_NTLMV2_AUTH"
 crudini --set $SAMBA_CONF global "encrypt passwords" "$ENCRYPT_PASSWORDS"
 crudini --set $SAMBA_CONF global "server signing" "$SERVER_SIGNING"
+crudini --set $SAMBA_CONF global "smb encrypt" "$SMB_ENCRYPT"
 # crudini --set $SAMBA_CONF global "restrict anonymous" "$RESTRICT_ANONYMOUS"
 # crudini --set $SAMBA_CONF global "domain master" "$DOMAIN_MASTER"
 # crudini --set $SAMBA_CONF global "local master" "$LOCAL_MASTER"
