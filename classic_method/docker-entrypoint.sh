@@ -215,6 +215,7 @@ echo --------------------------------------------------
 echo 'Regestering to Active Directory'
 echo --------------------------------------------------
 net ads join -U $AD_USERNAME%$AD_PASSWORD
+wbinfo --online-status
 
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
