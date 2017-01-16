@@ -247,21 +247,21 @@ crudini --set $SAMBA_CONF home "directory mask" "0777"
 crudini --set $SAMBA_CONF home "browseable" "yes"
 crudini --set $SAMBA_CONF home "printable" "no"
 crudini --set $SAMBA_CONF home "oplocks" "yes"
-crudini --set $SAMBA_CONF home "valid users" "%S"
+#crudini --set $SAMBA_CONF home "valid users" "%S"
 
-# Update nsswitch.conf with Winbind
-# sed -i "s#^\(passwd\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
-# sed -i "s#^\(group\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
-# sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+echo --------------------------------------------------
+echo "Updating NSSwitch configuration: \"/etc/nsswitch.conf\""
+echo --------------------------------------------------
+if [[ ! `grep "winbind" /etc/nsswitch.conf` ]]; then
+    sed -i "s#^\(passwd\:\s*compat\)\s*\(.*\)\$#\1 \2 winbind#" /etc/nsswitch.conf
+    sed -i "s#^\(group\:\s*compat\)\s*\(.*\)\$#\1 \2 winbind#" /etc/nsswitch.conf
+    sed -i "s#^\(shadow\:\s*compat\)\s*\(.*\)\$#\1 \2 winbind#" /etc/nsswitch.conf
+fi
 
 # /etc/init.d/winbind stop
 # /etc/init.d/nmbd restart
 # /etc/init.d/smbd restart
 # /etc/init.d/winbind start
-
-# sleep 5
-
-testparm -s
 
 # echo --------------------------------------------------
 # echo 'Generating Kerberos ticket'
@@ -283,7 +283,7 @@ testparm -s
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
 echo --------------------------------------------------
-#/etc/init.d/winbind stop
+/etc/init.d/winbind stop
 /etc/init.d/nmbd stop
 /etc/init.d/smbd stop
 
