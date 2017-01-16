@@ -89,11 +89,6 @@ if [[ ! `grep $GUEST_USERNAME /etc/passwd` ]]; then
 fi
 echo $GUEST_PASSWORD | tee - | smbpasswd -a -s $GUEST_USERNAME
 
-
-echo "session required pam_mkhomedir.so skel=/etc/skel/ umask=0022" | tee -a /etc/pam.d/common-session
-
-
-
 echo --------------------------------------------------
 echo " Starting system message bus"
 echo --------------------------------------------------
@@ -102,14 +97,27 @@ echo --------------------------------------------------
 echo --------------------------------------------------
 echo "Discovering domain specifications"
 echo --------------------------------------------------
-realm discover ${DOMAIN_NAME,,}
+#realm discover -v ${DOMAIN_NAME,,}
+realm discover -v $(echo $ADMIN_SERVER | awk '{print $1}')
 
 echo --------------------------------------------------
 echo "Joining domain: \"${DOMAIN_NAME,,}\""
 echo --------------------------------------------------
-echo $AD_PASSWORD | realm join --user=$AD_USERNAME ${DOMAIN_NAME,,}
+set +e
+    echo $AD_PASSWORD | realm join -v ${DOMAIN_NAME,,} --user=$AD_USERNAME
+    #echo $AD_PASSWORD | realm join --user="${DOMAIN_NAME^^}\\$AD_USERNAME" $(echo $ADMIN_SERVER | awk '{print $1}')
+set -e
 
+echo --------------------------------------------------
+echo "Starting ssd: \"sssd\""
+echo --------------------------------------------------
+/etc/init.d/sssd restart
+/etc/init.d/sssd status
 
+echo --------------------------------------------------
+echo "Activating home directory auto-creation"
+echo --------------------------------------------------
+echo "session required pam_mkhomedir.so skel=/etc/skel/ umask=0022" | tee -a /etc/pam.d/common-session
 
 echo --------------------------------------------------
 echo "Generating Samba configuration: \"$SAMBA_CONF\""
@@ -173,11 +181,11 @@ crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 # crudini --set $SAMBA_CONF global "winbind enum groups" "$WINBIND_ENUM_GROUPS"
 # crudini --set $SAMBA_CONF global "template homedir" "$TEMPLATE_HOMEDIR"
 # crudini --set $SAMBA_CONF global "template shell" "$TEMPLATE_SHELL"
-crudini --set $SAMBA_CONF global "client use spnego" "$CLIENT_USE_SPNEGO"
-crudini --set $SAMBA_CONF global "client ntlmv2 auth" "$CLIENT_NTLMV2_AUTH"
-crudini --set $SAMBA_CONF global "encrypt passwords" "$ENCRYPT_PASSWORDS"
-crudini --set $SAMBA_CONF global "server signing" "$SERVER_SIGNING"
-crudini --set $SAMBA_CONF global "smb encrypt" "$SMB_ENCRYPT"
+#crudini --set $SAMBA_CONF global "client use spnego" "$CLIENT_USE_SPNEGO"
+#crudini --set $SAMBA_CONF global "client ntlmv2 auth" "$CLIENT_NTLMV2_AUTH"
+#crudini --set $SAMBA_CONF global "encrypt passwords" "$ENCRYPT_PASSWORDS"
+#crudini --set $SAMBA_CONF global "server signing" "$SERVER_SIGNING"
+#crudini --set $SAMBA_CONF global "smb encrypt" "$SMB_ENCRYPT"
 # crudini --set $SAMBA_CONF global "restrict anonymous" "$RESTRICT_ANONYMOUS"
 # crudini --set $SAMBA_CONF global "domain master" "$DOMAIN_MASTER"
 # crudini --set $SAMBA_CONF global "local master" "$LOCAL_MASTER"
@@ -236,7 +244,7 @@ crudini --set $SAMBA_CONF home "read only" "no"
 crudini --set $SAMBA_CONF home "writeable" "yes"
 crudini --set $SAMBA_CONF home "create mask" "0777"
 crudini --set $SAMBA_CONF home "directory mask" "0777"
-crudini --set $SAMBA_CONF home "browseable" "no"
+crudini --set $SAMBA_CONF home "browseable" "yes"
 crudini --set $SAMBA_CONF home "printable" "no"
 crudini --set $SAMBA_CONF home "oplocks" "yes"
 crudini --set $SAMBA_CONF home "valid users" "%S"

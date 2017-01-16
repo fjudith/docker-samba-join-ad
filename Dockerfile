@@ -9,15 +9,17 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN set -x && \
     apt-get -y update && \
     apt-get -y install \
-        sssd \
         vim \
         nano \
         crudini \
         dbus \
         realmd \
+        krb5-user \
         adcli \
-        samba-common-bin \
+        winbind \
         samba \
+        samba-client \
+        sssd \
         sssd-tools \
         supervisor
 
