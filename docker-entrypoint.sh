@@ -277,7 +277,7 @@ fi
 # /etc/init.d/nmbd restart
 # /etc/init.d/smbd restart
 
-# pam-auth-update
+pam-auth-update
 
 
 echo --------------------------------------------------
