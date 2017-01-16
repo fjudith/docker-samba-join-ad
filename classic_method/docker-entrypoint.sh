@@ -19,6 +19,8 @@ PASSWORD_SERVER=${PASSWORD_SERVER:-${ADMIN_SERVER,,}}
 
 ENCRYPTION_TYPES=${ENCRYPTION_TYPES:-rc4-hmac des3-hmac-sha1 des-cbc-crc arcfour-hmac aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 des-cbc-md5}
 
+NAME_RESOLVE_ORDER=${NAME_RESOLVE_ORDER:-host bcast}
+
 SERVER_STRING=${SERVER_STRING:-Samba Server Version %v}
 SECURITY=${SECURITY:-ads}
 REALM=${REALM:-${DOMAIN_NAME^^}}
@@ -44,7 +46,7 @@ OS_LEVEL=${OS_LEVEL:-0}
 WINS_SUPPORT=${WINS_SUPPORT:-no}
 WINS_SERVER=${WINS_SERVER:-127.0.0.1}
 DNS_PROXY=${DNS_PROXY:-no}
-LOG_LEVEL=${LOG_LEVEL:-1}
+LOG_LEVEL=${LOG_LEVEL:-3}
 DEBUG_TIMESTAMP=${DEBUG_TIMESTAMP:-yes}
 LOG_FILE=${LOG_FILE:-/var/log/samba/log.%m}
 MAX_LOG_SIZE=${MAX_LOG_SIZE:-1000}
@@ -163,19 +165,9 @@ crudini --set $SAMBA_CONF global "kernel oplocks" "$KERNEL_OPLOCKS"
 crudini --set $SAMBA_CONF global "max xmit" "$MAX_XMIT"
 crudini --set $SAMBA_CONF global "dead time" "$DEAD_TIME"
 
-
 # Disable printing error log messages when CUPS is not installed.
 crudini --set $SAMBA_CONF global "printcap name" "/etc/printcap"
 crudini --set $SAMBA_CONF global "panic action" "no"
-
-# Works both in samba 3.2 and 3.6.
-#crudini --set $SAMBA_CONF global "idmap backend" "tdb"
-#crudini --set $SAMBA_CONF global "idmap uid" "$WINBIND_UID"
-#crudini --set $SAMBA_CONF global "idmap gid" "$WINBIND_GID"
-
-# no .tld
-#crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:backend" "rid"
-#crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:range" "$WINBIND_UID"
 
 # Inherit groups in groups
 crudini --set $SAMBA_CONF global "winbind nested groups" "yes"
@@ -189,16 +181,18 @@ crudini --set $SAMBA_CONF global "client ntlmv2 auth" "yes"
 crudini --set $SAMBA_CONF global "encrypt passwords" "yes"
 crudini --set $SAMBA_CONF global "restrict anonymous" "2"
 
+# Name resolution order
+crudini --set $SAMBA_CONF global "name resolve order" "$NAME_RESOLVE_ORDER"
 
 crudini --set $SAMBA_CONF home "comment" "Home Directories"
-crudini --set $SAMBA_CONF home "path" "/home/"
+crudini --set $SAMBA_CONF home "path" "/home"
 crudini --set $SAMBA_CONF home "public" "yes"
 crudini --set $SAMBA_CONF home "guest ok" "no"
 crudini --set $SAMBA_CONF home "read only" "no"
 crudini --set $SAMBA_CONF home "writeable" "yes"
 crudini --set $SAMBA_CONF home "create mask" "0777"
 crudini --set $SAMBA_CONF home "directory mask" "0777"
-crudini --set $SAMBA_CONF home "browseable" "no"
+crudini --set $SAMBA_CONF home "browseable" "yes"
 crudini --set $SAMBA_CONF home "printable" "no"
 crudini --set $SAMBA_CONF home "oplocks" "yes"
 
@@ -208,19 +202,14 @@ sed -i "s#^\(passwd\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
 sed -i "s#^\(group\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
 sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
 
-/etc/init.d/winbind stop
-/etc/init.d/samba restart
-/etc/init.d/winbind start
-
-sleep 5
-
-testparm -s
+/etc/init.d/nmbd restart
+/etc/init.d/smbd restart
+/etc/init.d/winbind restart
 
 echo --------------------------------------------------
 echo 'Generating Kerberos ticket'
 echo --------------------------------------------------
-echo $AD_PASSWORD | kinit $AD_USERNAME@$REALM
-klist
+echo $AD_PASSWORD | kinit -V $AD_USERNAME@$REALM
 
 echo --------------------------------------------------
 echo 'Regestering to Active Directory'
@@ -230,7 +219,9 @@ net ads join -U $AD_USERNAME%$AD_PASSWORD
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
 echo --------------------------------------------------
-/etc/init.d/samba stop
+/etc/init.d/nmbd stop
+/etc/init.d/smbd stop
+/etc/init.d/winbind stop
 
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'

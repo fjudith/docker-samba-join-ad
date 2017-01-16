@@ -18,7 +18,7 @@ HOSTNAME=${HOSTNAME:-$(hostname)}
 IP_ADDRESS=${IP_ADDRESS:-}
 DOMAIN_NAME=${DOMAIN_NAME:-domain.loc}
 ADMIN_SERVER=${ADMIN_SERVER:-${DOMAIN_NAME,,}}
-KDC_SERVER=${KDC_SERVER:-${ADMIN_SERVER,,}}
+KDC_SERVER=${KDC_SERVER:-$(echo ${ADMIN_SERVER,,} | awk '{print $1}')}
 PASSWORD_SERVER=${PASSWORD_SERVER:-${ADMIN_SERVER,,}}
 
 ENCRYPTION_TYPES=${ENCRYPTION_TYPES:-rc4-hmac des3-hmac-sha1 des-cbc-crc arcfour-hmac aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 des-cbc-md5}

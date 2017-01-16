@@ -15,10 +15,13 @@ RUN set -x && \
         dbus \
         realmd \
         krb5-user \
+        libpam-krb5 \
         adcli \
         winbind \
+        libnss-winbind \
         samba \
         samba-client \
+        libpam-mount \
         sssd \
         sssd-tools \
         supervisor
