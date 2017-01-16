@@ -31,8 +31,8 @@ REALM=${REALM:-${DOMAIN_NAME^^}}
 PASSWORD_SERVER=${PASSWORD_SERVER:-${DOMAIN_NAME,,}}
 WORKGROUP=${WORKGROUP:-${DOMAIN_NAME^^}}
 WINBIND_SEPARATOR=${WINBIND_SEPARATOR:-"\\"}
-WINBIND_UID=${WINBIND_UID:-10000-99999}
-WINBIND_GID=${WINBIND_GID:-10000-99999}
+WINBIND_UID=${WINBIND_UID:-50-9999999999}
+WINBIND_GID=${WINBIND_GID:-50-9999999999}
 WINBIND_ENUM_USERS=${WINBIND_ENUM_USERS:-yes}
 WINBIND_ENUM_GROUPS=${WINBIND_ENUM_GROUPS:-yes}
 TEMPLATE_HOMEDIR=${TEMPLATE_HOMEDIR:-/home/%D/%U}
@@ -174,8 +174,8 @@ crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 # crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 # crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 # #crudini --set $SAMBA_CONF global "winbind separator" "$WINBIND_SEPARATOR"
-# crudini --set $SAMBA_CONF global "winbind uid" "$WINBIND_UID"
-# crudini --set $SAMBA_CONF global "winbind gid" "$WINBIND_GID"
+crudini --set $SAMBA_CONF global "winbind uid" "$WINBIND_UID"
+crudini --set $SAMBA_CONF global "winbind gid" "$WINBIND_GID"
 crudini --set $SAMBA_CONF global "winbind use default domain" "$WINDBIND_USE_DEFAULT_DOMAIN"
 crudini --set $SAMBA_CONF global "winbind enum users" "$WINBIND_ENUM_USERS"
 crudini --set $SAMBA_CONF global "winbind enum groups" "$WINBIND_ENUM_GROUPS"

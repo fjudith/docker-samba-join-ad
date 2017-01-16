@@ -197,10 +197,14 @@ crudini --set $SAMBA_CONF home "printable" "no"
 crudini --set $SAMBA_CONF home "oplocks" "yes"
 
 
-# Update nsswitch.conf with Winbind
-sed -i "s#^\(passwd\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
-sed -i "s#^\(group\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
-sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+echo --------------------------------------------------
+echo "Updating NSSwitch configuration: \"/etc/nsswitch.conf\""
+echo --------------------------------------------------
+if [[ ! `grep "winbind" /etc/nsswitch.conf` ]]; then
+	sed -i "s#^\(passwd\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+	sed -i "s#^\(group\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+	sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
+fi
 
 /etc/init.d/nmbd restart
 /etc/init.d/smbd restart
@@ -212,10 +216,10 @@ echo --------------------------------------------------
 echo $AD_PASSWORD | kinit -V $AD_USERNAME@$REALM
 
 echo --------------------------------------------------
-echo 'Regestering to Active Directory'
+echo 'Registering to Active Directory'
 echo --------------------------------------------------
 net ads join -U $AD_USERNAME%$AD_PASSWORD
-wbinfo --online-status
+#wbinfo --online-status
 
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
