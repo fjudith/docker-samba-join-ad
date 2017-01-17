@@ -157,83 +157,52 @@ crudini --set $SAMBA_CONF global "cups options" "raw"
 crudini --set $SAMBA_CONF global "name resolve order" "$NAME_RESOLVE_ORDER"
 
 # Performance Tuning
-# crudini --set $SAMBA_CONF global "socket options" "$SOCKET_OPTIONS"
-# crudini --set $SAMBA_CONF global "read raw" "$READ_RAW"
-# crudini --set $SAMBA_CONF global "write raw" "$WRITE_RAW"
-# crudini --set $SAMBA_CONF global "oplocks" "$OPLOCKS"
-# crudini --set $SAMBA_CONF global "level2 oplocks" "$LEVEL2_OPLOCKS"
-# crudini --set $SAMBA_CONF global "kernel oplocks" "$KERNEL_OPLOCKS"
-# crudini --set $SAMBA_CONF global "max xmit" "$MAX_XMIT"
-# crudini --set $SAMBA_CONF global "dead time" "$DEAD_TIME"
+crudini --set $SAMBA_CONF global "socket options" "$SOCKET_OPTIONS"
+crudini --set $SAMBA_CONF global "read raw" "$READ_RAW"
+crudini --set $SAMBA_CONF global "write raw" "$WRITE_RAW"
+crudini --set $SAMBA_CONF global "oplocks" "$OPLOCKS"
+crudini --set $SAMBA_CONF global "level2 oplocks" "$LEVEL2_OPLOCKS"
+crudini --set $SAMBA_CONF global "kernel oplocks" "$KERNEL_OPLOCKS"
+crudini --set $SAMBA_CONF global "max xmit" "$MAX_XMIT"
+crudini --set $SAMBA_CONF global "dead time" "$DEAD_TIME"
 
 # Point to specific kerberos server
 crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
 
-# crudini --set $SAMBA_CONF global "security" "$SECURITY"
-# crudini --set $SAMBA_CONF global "realm" "$REALM"
-# crudini --set $SAMBA_CONF global "password server" "$PASSWORD_SERVER"
-# crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 # #crudini --set $SAMBA_CONF global "winbind separator" "$WINBIND_SEPARATOR"
 crudini --set $SAMBA_CONF global "winbind uid" "$WINBIND_UID"
 crudini --set $SAMBA_CONF global "winbind gid" "$WINBIND_GID"
 crudini --set $SAMBA_CONF global "winbind use default domain" "$WINDBIND_USE_DEFAULT_DOMAIN"
 crudini --set $SAMBA_CONF global "winbind enum users" "$WINBIND_ENUM_USERS"
 crudini --set $SAMBA_CONF global "winbind enum groups" "$WINBIND_ENUM_GROUPS"
-# crudini --set $SAMBA_CONF global "template homedir" "$TEMPLATE_HOMEDIR"
-# crudini --set $SAMBA_CONF global "template shell" "$TEMPLATE_SHELL"
-#crudini --set $SAMBA_CONF global "client use spnego" "$CLIENT_USE_SPNEGO"
-#crudini --set $SAMBA_CONF global "client ntlmv2 auth" "$CLIENT_NTLMV2_AUTH"
-#crudini --set $SAMBA_CONF global "encrypt passwords" "$ENCRYPT_PASSWORDS"
-#crudini --set $SAMBA_CONF global "server signing" "$SERVER_SIGNING"
-#crudini --set $SAMBA_CONF global "smb encrypt" "$SMB_ENCRYPT"
-# crudini --set $SAMBA_CONF global "restrict anonymous" "$RESTRICT_ANONYMOUS"
-# crudini --set $SAMBA_CONF global "domain master" "$DOMAIN_MASTER"
-# crudini --set $SAMBA_CONF global "local master" "$LOCAL_MASTER"
-# crudini --set $SAMBA_CONF global "preferred master" "$PREFERRED_MASTER"
-# crudini --set $SAMBA_CONF global "os level" "$OS_LEVEL"
+crudini --set $SAMBA_CONF global "template homedir" "$TEMPLATE_HOMEDIR"
+crudini --set $SAMBA_CONF global "template shell" "$TEMPLATE_SHELL"
+crudini --set $SAMBA_CONF global "client use spnego" "$CLIENT_USE_SPNEGO"
+crudini --set $SAMBA_CONF global "client ntlmv2 auth" "$CLIENT_NTLMV2_AUTH"
+crudini --set $SAMBA_CONF global "encrypt passwords" "$ENCRYPT_PASSWORDS"
+crudini --set $SAMBA_CONF global "server signing" "$SERVER_SIGNING"
+crudini --set $SAMBA_CONF global "smb encrypt" "$SMB_ENCRYPT"
+crudini --set $SAMBA_CONF global "restrict anonymous" "$RESTRICT_ANONYMOUS"
+crudini --set $SAMBA_CONF global "domain master" "$DOMAIN_MASTER"
+crudini --set $SAMBA_CONF global "local master" "$LOCAL_MASTER"
+crudini --set $SAMBA_CONF global "preferred master" "$PREFERRED_MASTER"
+crudini --set $SAMBA_CONF global "os level" "$OS_LEVEL"
 # crudini --set $SAMBA_CONF global "wins support" "$WINS_SUPPORT"
 # crudini --set $SAMBA_CONF global "wins server" "$WINS_SERVER"
-# crudini --set $SAMBA_CONF global "dns proxy" "$DNS_PROXY"
-# crudini --set $SAMBA_CONF global "log level" "$LOG_LEVEL"
-# crudini --set $SAMBA_CONF global "debug timestamp" "$DEBUG_TIMESTAMP"
-# crudini --set $SAMBA_CONF global "log file" "$LOG_FILE"
-# crudini --set $SAMBA_CONF global "max log size" "$MAX_LOG_SIZE"
-# crudini --set $SAMBA_CONF global "syslog only" "$SYSLOG_ONLY"
-# crudini --set $SAMBA_CONF global "syslog" "$SYSLOG"
+crudini --set $SAMBA_CONF global "dns proxy" "$DNS_PROXY"
+crudini --set $SAMBA_CONF global "log level" "$LOG_LEVEL"
+crudini --set $SAMBA_CONF global "debug timestamp" "$DEBUG_TIMESTAMP"
+crudini --set $SAMBA_CONF global "log file" "$LOG_FILE"
+crudini --set $SAMBA_CONF global "max log size" "$MAX_LOG_SIZE"
+crudini --set $SAMBA_CONF global "syslog only" "$SYSLOG_ONLY"
+crudini --set $SAMBA_CONF global "syslog" "$SYSLOG"
 # crudini --set $SAMBA_CONF global "panic action" "$PANIC_ACTION"
 # crudini --set $SAMBA_CONF global "hosts allow" "$HOSTS_ALLOW"
-# crudini --set $SAMBA_CONF global "socket options" "$SOCKET_OPTIONS"
-# crudini --set $SAMBA_CONF global "read raw" "$READ_RAW"
-# crudini --set $SAMBA_CONF global "write raw" "$WRITE_RAW"
-# crudini --set $SAMBA_CONF global "oplocks" "$OPLOCKS"
-# crudini --set $SAMBA_CONF global "level2 oplocks" "$LEVEL2_OPLOCKS"
-# crudini --set $SAMBA_CONF global "kernel oplocks" "$KERNEL_OPLOCKS"
-# crudini --set $SAMBA_CONF global "max xmit" "$MAX_XMIT"
-# crudini --set $SAMBA_CONF global "dead time" "$DEAD_TIME"
-
-
-
-
-# Works both in samba 3.2 and 3.6.
-#crudini --set $SAMBA_CONF global "idmap backend" "tdb"
-#crudini --set $SAMBA_CONF global "idmap uid" "$WINBIND_UID"
-#crudini --set $SAMBA_CONF global "idmap gid" "$WINBIND_GID"
-
-# no .tld
-# crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:backend" "rid"
-# crudini --set $SAMBA_CONF global "idmap config ${WORKGROUP^^}:range" "$WINBIND_UID"
 
 # Inherit groups in groups
-# crudini --set $SAMBA_CONF global "winbind nested groups" "no"
-# crudini --set $SAMBA_CONF global "winbind refresh tickets" "yes"
-# crudini --set $SAMBA_CONF global "winbind offline logon" "true"
-
-# No shell access
-# crudini --set $SAMBA_CONF global "template shell" "/bin/false"
-# crudini --set $SAMBA_CONF global "client use spnego" "yes"
-# crudini --set $SAMBA_CONF global "client ntlmv2 auth" "yes"
-# crudini --set $SAMBA_CONF global "encrypt passwords" "yes"
-# crudini --set $SAMBA_CONF global "restrict anonymous" "2"
+crudini --set $SAMBA_CONF global "winbind nested groups" "no"
+crudini --set $SAMBA_CONF global "winbind refresh tickets" "yes"
+crudini --set $SAMBA_CONF global "winbind offline logon" "true"
 
 
 crudini --set $SAMBA_CONF home "comment" "Home Directories"
@@ -257,25 +226,6 @@ if [[ ! `grep "winbind" /etc/nsswitch.conf` ]]; then
     sed -i "s#^\(group\:\s*compat\)\s*\(.*\)\$#\1 \2 winbind#" /etc/nsswitch.conf
     sed -i "s#^\(shadow\:\s*compat\)\s*\(.*\)\$#\1 \2 winbind#" /etc/nsswitch.conf
 fi
-
-# /etc/init.d/winbind stop
-# /etc/init.d/nmbd restart
-# /etc/init.d/smbd restart
-# /etc/init.d/winbind start
-
-# echo --------------------------------------------------
-# echo 'Generating Kerberos ticket'
-# echo --------------------------------------------------
-# echo $AD_PASSWORD | kinit $AD_USERNAME@$REALM
-# klist
-
-# echo --------------------------------------------------
-# echo 'Regestering to Active Directory'
-# echo --------------------------------------------------
-# net ads join -U $AD_USERNAME%$AD_PASSWORD osName="`uname -r`" osVer="`uname -v`"
-# /etc/init.d/winbind restart
-# /etc/init.d/nmbd restart
-# /etc/init.d/smbd restart
 
 pam-auth-update
 
