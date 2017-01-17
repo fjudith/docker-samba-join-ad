@@ -31,7 +31,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir -p /var/lib/samba/private && \
     systemctl enable sssd
 
-RUN chmod g+rwx /home
+RUN chmod 777 /home
 
 RUN env --unset=DEBIAN_FRONTEND
 
