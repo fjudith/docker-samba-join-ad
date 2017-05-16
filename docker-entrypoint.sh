@@ -204,9 +204,9 @@ crudini --set $SAMBA_CONF global "winbind nested groups" "no"
 crudini --set $SAMBA_CONF global "winbind refresh tickets" "yes"
 crudini --set $SAMBA_CONF global "winbind offline logon" "true"
 
-
+# home shared directory (restricted to owner)
 crudini --set $SAMBA_CONF home "comment" "Home Directories"
-crudini --set $SAMBA_CONF home "path" "/home/"
+crudini --set $SAMBA_CONF home "path" "/home"
 crudini --set $SAMBA_CONF home "public" "yes"
 crudini --set $SAMBA_CONF home "guest ok" "no"
 crudini --set $SAMBA_CONF home "read only" "no"
@@ -217,6 +217,34 @@ crudini --set $SAMBA_CONF home "browseable" "yes"
 crudini --set $SAMBA_CONF home "printable" "no"
 crudini --set $SAMBA_CONF home "oplocks" "yes"
 #crudini --set $SAMBA_CONF home "valid users" "%S"
+
+# public shared directory (unrestricted)
+mkdir -p "/usr/share/public"
+crudini --set $SAMBA_CONF public "comment" "Public Directories"
+crudini --set $SAMBA_CONF public "path" "/usr/share/public"
+crudini --set $SAMBA_CONF public "public" "yes"
+crudini --set $SAMBA_CONF public "guest ok" "no"
+crudini --set $SAMBA_CONF public "read only" "no"
+crudini --set $SAMBA_CONF public "writeable" "yes"
+crudini --set $SAMBA_CONF public "create mask" "0774"
+crudini --set $SAMBA_CONF public "directory mask" "0774"
+crudini --set $SAMBA_CONF public "browseable" "yes"
+crudini --set $SAMBA_CONF public "printable" "no"
+crudini --set $SAMBA_CONF public "oplocks" "yes"
+
+# private shared directory (restricted)
+mkdir -p "/usr/share/private"
+crudini --set $SAMBA_CONF private "comment" "Private Directories"
+crudini --set $SAMBA_CONF private "path" "/usr/share/private"
+crudini --set $SAMBA_CONF private "public" "yes"
+crudini --set $SAMBA_CONF private "guest ok" "no"
+crudini --set $SAMBA_CONF private "read only" "no"
+crudini --set $SAMBA_CONF private "writeable" "yes"
+crudini --set $SAMBA_CONF private "create mask" "0774"
+crudini --set $SAMBA_CONF private "directory mask" "0774"
+crudini --set $SAMBA_CONF private "browseable" "yes"
+crudini --set $SAMBA_CONF private "printable" "no"
+crudini --set $SAMBA_CONF private "oplocks" "yes"
 
 echo --------------------------------------------------
 echo "Updating NSSwitch configuration: \"/etc/nsswitch.conf\""

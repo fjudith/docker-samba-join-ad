@@ -184,6 +184,7 @@ crudini --set $SAMBA_CONF global "restrict anonymous" "2"
 # Name resolution order
 crudini --set $SAMBA_CONF global "name resolve order" "$NAME_RESOLVE_ORDER"
 
+# home shared directory (restricted to owner)
 crudini --set $SAMBA_CONF home "comment" "Home Directories"
 crudini --set $SAMBA_CONF home "path" "/home"
 crudini --set $SAMBA_CONF home "public" "yes"
@@ -196,6 +197,7 @@ crudini --set $SAMBA_CONF home "browseable" "yes"
 crudini --set $SAMBA_CONF home "printable" "no"
 crudini --set $SAMBA_CONF home "oplocks" "yes"
 
+# public shared directory (unrestricted)
 mkdir -p "/usr/share/public"
 crudini --set $SAMBA_CONF public "comment" "Public Directories"
 crudini --set $SAMBA_CONF public "path" "/usr/share/public"
@@ -209,6 +211,7 @@ crudini --set $SAMBA_CONF public "browseable" "yes"
 crudini --set $SAMBA_CONF public "printable" "no"
 crudini --set $SAMBA_CONF public "oplocks" "yes"
 
+# private shared directory (restricted)
 mkdir -p "/usr/share/private"
 crudini --set $SAMBA_CONF private "comment" "Private Directories"
 crudini --set $SAMBA_CONF private "path" "/usr/share/private"
