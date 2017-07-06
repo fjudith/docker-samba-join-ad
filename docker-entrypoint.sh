@@ -98,7 +98,7 @@ echo --------------------------------------------------
 echo --------------------------------------------------
 echo "Discovering domain specifications"
 echo --------------------------------------------------
-#realm discover -v ${DOMAIN_NAME,,}
+# realm discover -v ${DOMAIN_NAME,,}
 realm discover -v $(echo $ADMIN_SERVER | awk '{print $1}')
 
 echo --------------------------------------------------
