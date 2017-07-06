@@ -22,7 +22,7 @@ RUN set -x && \
         samba \
         samba-client \
         libpam-mount \
-        sssd-polkit-rules \
+        policykit-1 \
         sssd \
         sssd-tools \
         supervisor
