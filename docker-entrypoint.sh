@@ -87,7 +87,8 @@ echo --------------------------------------------------
 if [[ ! `grep $GUEST_USERNAME /etc/passwd` ]]; then
     useradd $GUEST_USERNAME
 fi
-echo $GUEST_PASSWORD | tee - | smbpasswd -a -s $GUEST_USERNAME
+#echo $GUEST_PASSWORD | tee - | smbpasswd -a -s $GUEST_USERNAME
+smbpasswd -a -s $GUEST_USERNAME -w $GUEST_PASSWORD
 
 echo --------------------------------------------------
 echo " Starting system message bus"
