@@ -22,14 +22,17 @@ RUN set -x && \
         samba \
         samba-client \
         libpam-mount \
-        policykit-1 \
+        polkit \
         sssd \
         sssd-tools \
         supervisor
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p /var/lib/samba/private
+RUN systemctl enable sssd
+
+RUN mkdir -p /var/lib/samba/private && \
+    
 
 RUN chmod 777 /home
 
