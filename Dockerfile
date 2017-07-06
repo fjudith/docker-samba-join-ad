@@ -31,8 +31,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN systemctl enable sssd
 
-RUN mkdir -p /var/lib/samba/private && \
-    
+RUN mkdir -p /var/lib/samba/private
 
 RUN chmod 777 /home
 
