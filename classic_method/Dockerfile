@@ -19,7 +19,8 @@ RUN set -x && \
         libnss-winbind \
         libpam-mount \
         cifs-utils \
-        samba-client
+        samba-client \
+        polkit
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
