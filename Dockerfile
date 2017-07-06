@@ -25,6 +25,9 @@ RUN set -x && \
         policykit-1 \
         sssd \
         sssd-tools \
+        libnss-sss \
+        libpam-sss \
+        adcli \
         supervisor
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
