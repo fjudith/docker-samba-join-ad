@@ -23,6 +23,7 @@ RUN set -x && \
         samba-client \
         libpam-mount \
         policykit-1 \
+        packagekit \
         sssd \
         sssd-tools \
         libnss-sss \
