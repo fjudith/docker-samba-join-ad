@@ -113,6 +113,8 @@ cat > /etc/krb5.conf << EOL
 }
 EOL
 
+cat /etc/krb5.conf
+
 # Rename original smb.conf
 if [[ ! -f /etc/samba/smb.conf.original ]]; then
 	mv /etc/samba/smb.conf /etc/samba/smb.conf.original
