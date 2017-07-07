@@ -107,7 +107,6 @@ cat > /etc/krb5.conf << EOL
     ${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
 EOL
 
-cat /etc/krb5.conf
 
 # Rename original smb.conf
 if [[ ! -f /etc/samba/smb.conf.original ]]; then
