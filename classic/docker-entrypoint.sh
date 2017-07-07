@@ -69,12 +69,26 @@ DEAD_TIME=${DEAD_TIME:-15}
 
 SAMBA_CONF=/etc/samba/smb.conf
 
-# Setting Timezone 
+
+echo --------------------------------------------------
+echo "Setting up Timzone: \"${TZ}\""
+echo --------------------------------------------------
 echo $TZ | tee /etc/timezone
 dpkg-reconfigure --frontend noninteractive tzdata
 
+echo --------------------------------------------------
+echo "Setting up guest user credential: \"${GUEST_USERNAME}\""
+echo --------------------------------------------------
+if [[ ! `grep $GUEST_USERNAME /etc/passwd` ]]; then
+    useradd $GUEST_USERNAME
+fi
+#echo $GUEST_PASSWORD | tee - | smbpasswd -a -s $GUEST_USERNAME
+smbpasswd -a -s $GUEST_USERNAME -w $GUEST_PASSWORD
 
-# Initialize Kerberos authentication
+
+echo --------------------------------------------------
+echo "Setting up Kerberos realm: \"${DOMAIN_NAME^^}\""
+echo --------------------------------------------------
 if [[ ! -f /etc/krb5.conf.original ]]; then
 	mv /etc/krb5.conf /etc/krb5.conf.original
 fi
@@ -120,7 +134,7 @@ if [[ ! -f /etc/samba/smb.conf.original ]]; then
 fi
 
 echo --------------------------------------------------
-echo "Generating Samba configuration: \"$SAMBA_CONF\""
+echo "Generating Samba configuration: \"${SAMBA_CONF}\""
 echo --------------------------------------------------
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"
