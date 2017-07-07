@@ -87,7 +87,7 @@ cat > /etc/krb5.conf << EOL
     admin_server = FILE:/var/log/kadmind.log
 
 [libdefaults]
-	default_realm = ${DOMAIN_NAME^^}
+    default_realm = ${DOMAIN_NAME^^}
     dns_lookup_realm = false
     dns_lookup_kdc = false
 
