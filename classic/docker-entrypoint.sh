@@ -6,9 +6,6 @@
 
 set -e
 
-GUEST_USERNAME=${GUEST_USERNAME:-ftp}
-GUEST_PASSWORD=${GUEST_PASSWORD:-V3ry1nS3cur3P4ss0rd}
-
 TZ=${TZ:-Etc/UTC}
 # Update loopback entry
 TZ=${TZ:-Etc/UTC}
@@ -130,7 +127,6 @@ echo --------------------------------------------------
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"
 crudini --set $SAMBA_CONF global "store dos attributes" "yes"
-crudini --set $SAMBA_CONF global "guest account" "$GUEST_USERNAME"
 
 crudini --set $SAMBA_CONF global "workgroup" "$WORKGROUP"
 crudini --set $SAMBA_CONF global "server string" "$SERVER_STRING"
