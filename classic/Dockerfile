@@ -6,6 +6,8 @@ ENV TERM=xterm
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV GUEST_USERNAME=ftp
+
 RUN groupadd --system --gid 1234 waarp && \
 	useradd --system --create-home --shell /bin/bash --gid 1234 --uid 1234 waarp
 

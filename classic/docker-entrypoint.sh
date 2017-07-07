@@ -76,15 +76,6 @@ echo --------------------------------------------------
 echo $TZ | tee /etc/timezone
 dpkg-reconfigure --frontend noninteractive tzdata
 
-echo --------------------------------------------------
-echo "Setting up guest user credential: \"${GUEST_USERNAME}\""
-echo --------------------------------------------------
-if [[ ! `grep $GUEST_USERNAME /etc/passwd` ]]; then
-    useradd $GUEST_USERNAME
-fi
-#echo $GUEST_PASSWORD | tee - | smbpasswd -a -s $GUEST_USERNAME
-smbpasswd -a -s $GUEST_USERNAME -w $GUEST_PASSWORD
-
 
 echo --------------------------------------------------
 echo "Setting up Kerberos realm: \"${DOMAIN_NAME^^}\""
