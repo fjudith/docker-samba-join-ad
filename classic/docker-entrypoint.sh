@@ -255,6 +255,8 @@ if [[ ! `grep "winbind" /etc/nsswitch.conf` ]]; then
 	sed -i "s#^\(shadow\:\s*compat\)\$#\1 winbind#" /etc/nsswitch.conf
 fi
 
+pam-auth-update
+
 /etc/init.d/nmbd restart
 /etc/init.d/smbd restart
 /etc/init.d/winbind restart
