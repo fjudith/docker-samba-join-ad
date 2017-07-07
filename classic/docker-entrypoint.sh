@@ -220,7 +220,8 @@ crudini --set $SAMBA_CONF home "oplocks" "yes"
 #crudini --set $SAMBA_CONF home "valid users" "%S"
 
 # public shared directory (unrestricted)
-mkdir -p -m 777 "/usr/share/public"
+mkdir -p "/usr/share/public" && chmod 777 "/usr/share/public/"
+
 crudini --set $SAMBA_CONF public "comment" "Public Directories"
 crudini --set $SAMBA_CONF public "path" "/usr/share/public/"
 crudini --set $SAMBA_CONF public "public" "yes"
@@ -234,7 +235,8 @@ crudini --set $SAMBA_CONF public "printable" "no"
 crudini --set $SAMBA_CONF public "oplocks" "yes"
 
 # private shared directory (restricted)
-mkdir -p -m 777 "/usr/share/private"
+mkdir -p "/usr/share/private" && chmod 777 /usr/share/private
+
 crudini --set $SAMBA_CONF private "comment" "Private Directories"
 crudini --set $SAMBA_CONF private "path" "/usr/share/private/"
 crudini --set $SAMBA_CONF private "public" "yes"
