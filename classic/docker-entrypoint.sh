@@ -106,10 +106,6 @@ cat > /etc/krb5.conf << EOL
 [domain_realm]
     .${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
     ${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
-
-[login]
-    krb4_convert = true
-    krb4_get_tickets = false
 }
 EOL
 
