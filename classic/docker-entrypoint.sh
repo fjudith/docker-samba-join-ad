@@ -82,8 +82,8 @@ fi
 
 cat > /etc/krb5.conf << EOL
 [logging]
-    default = FILE:/var/krb5/kdc.log 
-    kdc = FILE:/var/krb5/kdc.log 
+    default = FILE:/var/log/krb5.log 
+    kdc = FILE:/var/log/kdc.log 
     admin_server = FILE:/var/log/kadmind.log
 
 [libdefaults]
