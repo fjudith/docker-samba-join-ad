@@ -15,6 +15,7 @@ RUN set -x && \
         supervisor \
         krb5-user \
         winbind \
+        samba-dsdb-modules \
         samba
 
 
