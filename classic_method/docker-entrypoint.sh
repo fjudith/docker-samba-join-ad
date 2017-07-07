@@ -6,6 +6,10 @@
 
 set -e
 
+GUEST_USERNAME=${GUEST_USERNAME:-ftp}
+GUEST_PASSWORD=${GUEST_PASSWORD:-V3ry1nS3cur3P4ss0rd}
+
+TZ=${TZ:-Etc/UTC}
 # Update loopback entry
 TZ=${TZ:-Etc/UTC}
 AD_USERNAME=${AD_USERNAME:-administrator}
@@ -36,7 +40,8 @@ TEMPLATE_SHELL=${TEMPLATE_SHELL:-/bin/bash}
 CLIENT_USE_SPNEGO=${CLIENT_USE_SPNEGO:-yes}
 CLIENT_NTLMV2_AUTH=${CLIENT_NTLMV2_AUTH:-yes}
 ENCRYPT_PASSWORDS=${ENCRYPT_PASSWORDS:-yes}
-SERVER_SIGNING=${SERVER_SIGNING:-mandatory}
+SERVER_SIGNING=${SERVER_SIGNING:-auto}
+SMB_ENCRYPT=${SMB_ENCRYPT:-auto}
 WINDBIND_USE_DEFAULT_DOMAIN=${WINBIND_USE_DEFAULT_DOMAIN:-yes}
 RESTRICT_ANONYMOUS=${RESTRICT_ANONYMOUS:-2}
 DOMAIN_MASTER=${DOMAIN_MASTER:-no}
@@ -46,7 +51,7 @@ OS_LEVEL=${OS_LEVEL:-0}
 WINS_SUPPORT=${WINS_SUPPORT:-no}
 WINS_SERVER=${WINS_SERVER:-127.0.0.1}
 DNS_PROXY=${DNS_PROXY:-no}
-LOG_LEVEL=${LOG_LEVEL:-3}
+LOG_LEVEL=${LOG_LEVEL:-1}
 DEBUG_TIMESTAMP=${DEBUG_TIMESTAMP:-yes}
 LOG_FILE=${LOG_FILE:-/var/log/samba/log.%m}
 MAX_LOG_SIZE=${MAX_LOG_SIZE:-1000}
@@ -81,35 +86,25 @@ echo "
     admin_server = FILE:/var/log/kadmind.log
 [libdefaults]
 	default_realm = ${DOMAIN_NAME^^}
-    ticket_lifetime = 24h
-    clock-skew = 300
-    forwardable = true
-#   default_tkt_enctypes = ${ENCRYPTION_TYPES}
-#   default_tgs_enctypes = ${ENCRYPTION_TYPES}
-#   dns_lookup_realm = false
-#   dns_lookup_kdc = true
+    dns_lookup_realm = false
+    dns_lookup_kdc = false
+[realms]
     ${DOMAIN_NAME^^} = {
-        kdc = ${KDC_SERVER,,}:88
-        admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}'):464
+        kdc = ${KDC_SERVER,,}
+        admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
         default_domain = ${DOMAIN_NAME,,}       
 }
     ${DOMAIN_NAME,,} = {
-        kdc = ${KDC_SERVER,,}:88
-        admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}'):464
-        default_domain = ${DOMAIN_NAME,,}       
+        kdc = ${KDC_SERVER,,}
+        admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
+        default_domain = ${DOMAIN_NAME,,}
 }
 [domain_realm]
     .${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
     ${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
-[kdc]
-  profile = /etc/krb5kdc/kdc.conf
-[appdefaults]
-  pam = {
-    debug = false
-    ticket_lifetime = 36000
-    renew_lifetime = 36000
-    forwardable = true
-    krb4_convert = false
+[login]
+    krb4_convert = true
+    krb4_get_tickets = false
 }
 " > /etc/krb5.conf
 

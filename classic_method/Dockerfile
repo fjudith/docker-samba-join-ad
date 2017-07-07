@@ -14,13 +14,9 @@ RUN set -x && \
         crudini \
         supervisor \
         krb5-user \
-        libpam-krb5 \
         winbind \
-        libnss-winbind \
-        libpam-mount \
-        cifs-utils \
-        samba-client \
-        polkit
+        samba
+
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
