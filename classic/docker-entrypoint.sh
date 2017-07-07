@@ -96,12 +96,12 @@ cat > /etc/krb5.conf << EOL
         kdc = ${KDC_SERVER,,}
         admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
         default_domain = ${DOMAIN_NAME^^}       
-}
+    }
     ${DOMAIN_NAME,,} = {
         kdc = ${KDC_SERVER,,}
         admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
         default_domain = ${DOMAIN_NAME,,}
-}
+    }
 
 [domain_realm]
     .${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
