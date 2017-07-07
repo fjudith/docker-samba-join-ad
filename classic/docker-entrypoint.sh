@@ -79,15 +79,18 @@ dpkg-reconfigure --frontend noninteractive tzdata
 if [[ ! -f /etc/krb5.conf.original ]]; then
 	mv /etc/krb5.conf /etc/krb5.conf.original
 fi
-echo "
+
+cat > /etc/krb5.conf << EOL
 [logging]
     default = FILE:/var/krb5/kdc.log 
     kdc = FILE:/var/krb5/kdc.log 
     admin_server = FILE:/var/log/kadmind.log
+
 [libdefaults]
 	default_realm = ${DOMAIN_NAME^^}
     dns_lookup_realm = false
     dns_lookup_kdc = false
+
 [realms]
     ${DOMAIN_NAME^^} = {
         kdc = ${KDC_SERVER,,}
@@ -99,14 +102,16 @@ echo "
         admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
         default_domain = ${DOMAIN_NAME,,}
 }
+
 [domain_realm]
     .${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
     ${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
+
 [login]
     krb4_convert = true
     krb4_get_tickets = false
 }
-" > /etc/krb5.conf
+EOL
 
 # Rename original smb.conf
 if [[ ! -f /etc/samba/smb.conf.original ]]; then
