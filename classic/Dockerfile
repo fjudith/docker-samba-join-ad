@@ -15,8 +15,11 @@ RUN set -x && \
         supervisor \
         krb5-user \
         winbind \
+        libnss-winbind \
+        samba \
         samba-dsdb-modules \
-        samba
+        samba-client \
+        libpam-mount \
 
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
