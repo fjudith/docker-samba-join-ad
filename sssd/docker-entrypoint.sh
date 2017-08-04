@@ -76,11 +76,6 @@ echo --------------------------------------------------
 echo $TZ | tee /etc/timezone
 dpkg-reconfigure --frontend noninteractive tzdata
 
-if [[ ! -f /etc/samba/smb.conf.original ]]; then
-    mv /etc/samba/smb.conf /etc/samba/smb.conf.original
-    touch $SAMBA_CONF
-fi
-
 echo --------------------------------------------------
 echo "Setting up guest user credential: \"$GUEST_USERNAME\""
 echo --------------------------------------------------
@@ -100,6 +95,9 @@ echo "Discovering domain specifications"
 echo --------------------------------------------------
 # realm discover -v ${DOMAIN_NAME,,}
 realm discover -v $(echo $ADMIN_SERVER | awk '{print $1}')
+
+# Restrict Domain controllers to join as per ADMIN_SERVER environment variable
+crudini --set /etc/sssd/sssd.conf "domain/${DOMAIN^^}" "ad_server" "$(echo ${ADMIN_SERVER} | sed 's#\s#,#g')""
 
 echo --------------------------------------------------
 echo "Joining domain: \"${DOMAIN_NAME,,}\""
@@ -123,6 +121,11 @@ echo "session required pam_mkhomedir.so skel=/etc/skel/ umask=0022" | tee -a /et
 echo --------------------------------------------------
 echo "Generating Samba configuration: \"$SAMBA_CONF\""
 echo --------------------------------------------------
+if [[ ! -f /etc/samba/smb.conf.original ]]; then
+    mv /etc/samba/smb.conf /etc/samba/smb.conf.original
+    touch $SAMBA_CONF
+fi
+
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"
 crudini --set $SAMBA_CONF global "store dos attributes" "yes"
