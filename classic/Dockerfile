@@ -14,12 +14,13 @@ RUN set -x && \
         crudini \
         supervisor \
         krb5-user \
+        libpam-krb5 \
         winbind \
         libnss-winbind \
         samba \
         samba-dsdb-modules \
         samba-client \
-        libpam-mount \
+        libpam-mount
 
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
