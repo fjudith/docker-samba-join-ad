@@ -110,7 +110,7 @@ set +e
 set -e
 
 echo --------------------------------------------------
-echo "Starting ssd: \"sssd\""
+echo "Starting: \"sssd\""
 echo --------------------------------------------------
 /etc/init.d/sssd restart
 /etc/init.d/sssd status
