@@ -112,8 +112,8 @@ set -e
 echo --------------------------------------------------
 echo "Starting: \"sssd\""
 echo --------------------------------------------------
-/etc/init.d/sssd restart
-/etc/init.d/sssd status
+timeout 30 /etc/init.d/sssd restart
+timeout 30 /etc/init.d/sssd status
 
 echo --------------------------------------------------
 echo "Activating home directory auto-creation"
