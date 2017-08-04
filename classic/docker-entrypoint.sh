@@ -119,7 +119,6 @@ echo "Activating home directory auto-creation"
 echo --------------------------------------------------
 echo "session required pam_mkhomedir.so skel=/etc/skel/ umask=0022" | tee -a /etc/pam.d/common-session
 
-
 echo --------------------------------------------------
 echo "Generating Samba configuration: \"${SAMBA_CONF}\""
 echo --------------------------------------------------
