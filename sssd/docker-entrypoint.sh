@@ -97,7 +97,7 @@ echo --------------------------------------------------
 realm discover -v $(echo $ADMIN_SERVER | awk '{print $1}')
 
 # Restrict Domain controllers to join as per ADMIN_SERVER environment variable
-crudini --set /etc/sssd/sssd.conf "domain/${DOMAIN_NAME^^}" "ad_server" "$(echo ${ADMIN_SERVER} | sed 's#\s#,#g')""
+crudini --set /etc/sssd/sssd.conf "domain/${DOMAIN_NAME^^}" "ad_server" "$(echo ${ADMIN_SERVER} | sed 's#\s#,#g')"
 
 echo --------------------------------------------------
 echo "Joining domain: \"${DOMAIN_NAME,,}\""
