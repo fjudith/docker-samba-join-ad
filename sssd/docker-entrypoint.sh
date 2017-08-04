@@ -99,6 +99,8 @@ realm discover -v $(echo $ADMIN_SERVER | awk '{print $1}')
 # Restrict Domain controllers to join as per ADMIN_SERVER environment variable
 crudini --set /etc/sssd/sssd.conf "domain/${DOMAIN_NAME^^}" "ad_server" "$(echo ${ADMIN_SERVER} | sed 's#\s#,#g')"
 
+cat /etc/sssd/sssd.conf
+
 echo --------------------------------------------------
 echo "Joining domain: \"${DOMAIN_NAME,,}\""
 echo --------------------------------------------------
@@ -269,7 +271,7 @@ echo --------------------------------------------------
 /etc/init.d/nmbd stop
 /etc/init.d/smbd stop
 
-net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
+/et
 
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'
