@@ -114,16 +114,21 @@ cat > /etc/krb5.conf << EOL
     ${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
 EOL
 
+echo --------------------------------------------------
+echo "Activating home directory auto-creation"
+echo --------------------------------------------------
+echo "session required pam_mkhomedir.so skel=/etc/skel/ umask=0022" | tee -a /etc/pam.d/common-session
 
+
+echo --------------------------------------------------
+echo "Generating Samba configuration: \"${SAMBA_CONF}\""
+echo --------------------------------------------------
 # Rename original smb.conf
 if [[ ! -f /etc/samba/smb.conf.original ]]; then
 	mv /etc/samba/smb.conf /etc/samba/smb.conf.original
 	touch $SAMBA_CONF
 fi
 
-echo --------------------------------------------------
-echo "Generating Samba configuration: \"${SAMBA_CONF}\""
-echo --------------------------------------------------
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"
 crudini --set $SAMBA_CONF global "store dos attributes" "yes"
