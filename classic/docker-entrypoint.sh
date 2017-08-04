@@ -282,6 +282,8 @@ echo --------------------------------------------------
 /etc/init.d/smbd stop
 /etc/init.d/winbind stop
 
+net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
+
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'
 echo --------------------------------------------------
