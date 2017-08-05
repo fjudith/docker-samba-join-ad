@@ -66,6 +66,13 @@ DEAD_TIME=${DEAD_TIME:-15}
 
 SAMBA_CONF=/etc/samba/smb.conf
 
+echo --------------------------------------------------
+echo "Backing up current smb.conf"
+echo --------------------------------------------------
+if [[ ! -f /etc/samba/smb.conf.original ]]; then
+	mv -v /etc/samba/smb.conf /etc/samba/smb.conf.original
+	touch $SAMBA_CONF
+fi
 
 echo --------------------------------------------------
 echo "Setting up Timzone: \"${TZ}\""
@@ -122,11 +129,6 @@ echo "session required pam_mkhomedir.so skel=/etc/skel/ umask=0022" | tee -a /et
 echo --------------------------------------------------
 echo "Generating Samba configuration: \"${SAMBA_CONF}\""
 echo --------------------------------------------------
-# Rename original smb.conf
-if [[ ! -f /etc/samba/smb.conf.original ]]; then
-	mv /etc/samba/smb.conf /etc/samba/smb.conf.original
-	touch $SAMBA_CONF
-fi
 
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"

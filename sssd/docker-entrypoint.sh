@@ -71,6 +71,14 @@ DEAD_TIME=${DEAD_TIME:-15}
 SAMBA_CONF=/etc/samba/smb.conf
 
 echo --------------------------------------------------
+echo "Backing up current smb.conf"
+echo --------------------------------------------------
+if [[ ! -f /etc/samba/smb.conf.original ]]; then
+	mv -v /etc/samba/smb.conf /etc/samba/smb.conf.original
+	touch $SAMBA_CONF
+fi
+
+echo --------------------------------------------------
 echo "Setting Timezone configuration"
 echo --------------------------------------------------
 echo $TZ | tee /etc/timezone
@@ -123,10 +131,6 @@ echo "session required pam_mkhomedir.so skel=/etc/skel/ umask=0022" | tee -a /et
 echo --------------------------------------------------
 echo "Generating Samba configuration: \"$SAMBA_CONF\""
 echo --------------------------------------------------
-if [[ ! -f /etc/samba/smb.conf.original ]]; then
-    mv /etc/samba/smb.conf /etc/samba/smb.conf.original
-    touch $SAMBA_CONF
-fi
 
 crudini --set $SAMBA_CONF global "vfs objects" "acl_xattr"
 crudini --set $SAMBA_CONF global "map acl inherit" "yes"
@@ -262,7 +266,6 @@ if [[ ! `grep "winbind" /etc/nsswitch.conf` ]]; then
 fi
 
 pam-auth-update
-
 
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
