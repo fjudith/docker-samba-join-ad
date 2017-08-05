@@ -271,8 +271,6 @@ echo --------------------------------------------------
 /etc/init.d/nmbd stop
 /etc/init.d/smbd stop
 
-/et
-
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'
 echo --------------------------------------------------
