@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN set -x && \
     apt-get -y update && \
     apt-get -y --no-install-recommends install \
-        bind-utils \
+        dnsutils \
         vim \
         nano \
         crudini \
