@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN set -x && \
     apt-get -y update && \
-    apt-get -y install \
+    apt-get -y --no-install-recommends install \
         dnsutils \
         vim \
         nano \
