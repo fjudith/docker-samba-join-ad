@@ -1,3 +1,6 @@
+[![](https://images.microbadger.com/badges/image/fjudith/samba-join-ad.svg)](https://microbadger.com/images/fjudith/samba-join-ad "Get your own image badge on microbadger.com")
+[![Build Status](https://travis-ci.org/fjudith/docker-samba-join-ad.svg?branch=master)](https://travis-ci.org/fjudith/docker-samba-join-ad)
+
 # Introduction
 
 Samba : the standard Windows interoperability suite of programs for Linux and Unix.
