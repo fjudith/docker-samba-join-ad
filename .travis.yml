@@ -1,0 +1,41 @@
+env:
+  global:
+  # Docker Repository
+  - REPO=fjudith/samba-join-ad
+  # Compute docker tag
+  - TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  # Retreive commit ID
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - secure: "kw1Pl0b0o3ZglShAz0vPZSQRDsm5+SItge+osWkkq12lHoL7lSbkxsUkZsiAEzD19/I5tFr5cDaa0zgxMfHME+DOM2Cg1SJnSN79JlxwcM0+IjXkJzraQpT6F3BgmeB2yebTWPBGNierfNzeO0GYEUwVlozt1eNR4Y9fGAVOyipKieXvBJR+rtSkZX7r0Fsg/1KDgeBw0cQ1VubEzSfgdwO2fZx4+3CEDT453CKUaHyC6DR1VhxZBgDkc/7LZxOXTZG54h4SMgdITOT8XvkC3UACtsHPWm9HqANbm2H5g6EcrJtPlB5HIo63Nv8+bsq7xuuBw1fmuss3pPtK3PumePEquUTkoM3JL5qfOwBFnr25HWkkxhuzNb6XyNi+qon+xS99rVR03N8d5UNjLEKujjHMJOyhecDDwRjFi8rQQ2H2mkrEal9uZ956FEQXZSycVzGXeqGHwLw/mc5hgiL+MGmhmfLZOdp2f1xLwN+LiL40QOCeLT79BucnMHQ6sA0IYz5JbNWspGHjv+a1UI1sgD9X8/v6jcPeLuBGEAZbExcVeywEPeycbCHBhb6uefh6pviVJGs6fhOC6UsUJC0wzCzahvCJvB0tGw/JJQZx5MkpMvR8Z8cGZqvktpPSDOi8ZSQsucJ7Kr5nCnhcfaeknzxSEdh+BNSAeXW9t4TPfpw="
+  - secure: "FSA6LQmKUNqZpqXleL6u0AvtLgYkEoFotS8gYXtxd6vRUqr2pWeJoI2BsUWfTsJcjmDqBy3qluFdL0q5/ZNKIRc3r+3Wm+59OST9fruppFy8XGdcLdN7zr51m4JVvPBSMSTdtwKIa6+rDtMUs/vLpdX5VmPUB33x/1drVOqtpHYxNTk/dIXzd6D/pHq/TRsLk0yK8AqyLz3thnVPH4rpsb0QWZQzG9/RrH+KHCir5TYu34u46ms4zpnsSrGJ+rn5X9AxfCOvqOLPCdXa4ONsehwsv7HMCZHd8Ls2oRNFEWDZCAgenRHgWUs4CGpZRFkYqqptiE9+7sOVUdUFVLAr2w6dwA+lo8SqM/5mOb9hNVHP+WzOYvv15RZtiMrqKb8TA8AsZL8zcNR+Eqfzfze+nU2VicVfcegwQJgFamSX/DJTQf+R6+dldtpxFp5weQr8wvb0s6C2m+3rISYRo83MR6KJN3206cCkL9QnPLCsnjOH5iY7LGn3abVnSoRYdgGekb9fk2LkwXZhPyegxgQ4kQ3f+Xl3KrUkMM0P7Cu49qo/0/tjHM7NP+1MfjLbkKMXaCMB4wpicmd8fBT8PQD6Up2eF+hRc/63VYiog4A3vaKEojerQ9YpJqAUS/ZcwbWVSIZ5HT3/bgX4P6sfnFPaVUm88VCaZTXcBdSQ4kydqf8="
+  - secure: "dIr0flFPazR54M5Zr+hHsUEakXXg5Gi2VtE+YqWSClPkweHBS9OBWKBX55Odpa1JQ14zJxzofjed/c3wDiV92zwGBrRriVDn11q7kcONxoHOvquwrgq5Bt7IxpfPH7xzr5g7JlSHOlBKKw0qM8EEse9WoDXaC2oS5U0bzHgDoU1pY8skyBCsMauH/PH9+FuSFJmX5+Y66Pm80b9FGgxcHMHIcFXqxd2eGTEj4LUJgJkwtF+L49230lbx9LFQh7gdlnHUy9dKz0c5JRAuj+WIAVKPkuth1Xlk/Vbi7Y+8Q+SdsqJ2m8f4rqIHP5t05bbZNSTmYyhvMujHWk9hPhueQc0Ctiwf6gfl8kUJGSXpSQp+J1bOlXNnicRrCIx/6bDV3T8jl/BCzQ+YBPhSGeGx7aZpIFcZeKXlrpcpPmFHz+gmzQBv/d0/WMIKEWfBHI/R+Td9TOy3a3cig+C1ta/vXPFZyFyku2LelHrBP06SEJju8CHC2/g8fpmfAsqSJ+NXY+svNT+ea6rZYH1rWdeXyu18+U+VdIH9sqJSVvuSAdEY1Cfy9uEsha2z/KdNJ/oPRd7b8+mcGYgDUo7zseqY4Mn3f2ZIoqP3e8Jy1RX5o6cTluEXy3KbpkwS3UDtetD9JfHZUM99e1niju+cxPuSOqsD5gBjzI9IIZHttVe7pEk="
+
+
+sudo: required
+services:
+  - docker
+
+
+before_install:
+  - docker build -f sssd/Dockerfile -t $REPO:$COMMIT-sssd sssd/
+  - docker build -f classic/Dockerfile -t $REPO:$COMMIT-classic classic/
+  - docker run -d --name "samba-sssd" $REPO:$COMMIT-sssd
+  - docker run -d --name "samba-classic" $REPO:$COMMIT-classic
+  - docker ps -a
+
+
+script:
+  # Wait for alfresco to start
+  - sleep 10
+  - docker logs samba-sssd
+  - docker logs samba-classic
+
+
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - docker tag $REPO:$COMMIT-sssd $REPO:$TAG
+  - docker tag $REPO:$COMMIT-sssd $REPO:sssd
+  - docker tag $REPO:$COMMIT-sssd $REPO:travis-$TRAVIS_BUILD_NUMBER-sssd
+  - docker tag $REPO:$COMMIT-sssd $REPO:classic
+  - docker tag $REPO:$COMMIT-sssd $REPO:travis-$TRAVIS_BUILD_NUMBER-classic
+  - docker push $REPO
