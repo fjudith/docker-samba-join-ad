@@ -36,6 +36,6 @@ after_success:
   - docker tag $REPO:$COMMIT-sssd $REPO:$TAG
   - docker tag $REPO:$COMMIT-sssd $REPO:sssd
   - docker tag $REPO:$COMMIT-sssd $REPO:travis-$TRAVIS_BUILD_NUMBER-sssd
-  - docker tag $REPO:$COMMIT-sssd $REPO:classic
-  - docker tag $REPO:$COMMIT-sssd $REPO:travis-$TRAVIS_BUILD_NUMBER-classic
+  - docker tag $REPO:$COMMIT-classic $REPO:classic
+  - docker tag $REPO:$COMMIT-classic $REPO:travis-$TRAVIS_BUILD_NUMBER-classic
   - docker push $REPO
