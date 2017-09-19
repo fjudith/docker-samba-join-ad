@@ -280,4 +280,4 @@ net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'
 echo --------------------------------------------------
-/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+exec "$@"
