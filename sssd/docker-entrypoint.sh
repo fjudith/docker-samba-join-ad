@@ -102,11 +102,6 @@ echo --------------------------------------------------
 # realm discover -v ${DOMAIN_NAME,,}
 realm discover -v $(echo $ADMIN_SERVER | awk '{print $1}')
 
-# Restrict Domain controllers to join as per ADMIN_SERVER environment variable
-crudini --set /etc/sssd/sssd.conf "domain/${DOMAIN_NAME^^}" "ad_server" "$(echo ${ADMIN_SERVER} | sed 's#\s#,#g')"
-
-cat /etc/sssd/sssd.conf
-
 echo --------------------------------------------------
 echo "Joining domain: \"${DOMAIN_NAME,,}\""
 echo --------------------------------------------------
@@ -114,6 +109,10 @@ echo --------------------------------------------------
 #echo $AD_PASSWORD | realm join -v ${DOMAIN_NAME,,} --user=$AD_USERNAME
 printf $AD_PASSWORD | realm join -v $(echo ${ADMIN_SERVER,,} | awk '{print $1}') --user=$AD_USERNAME
 #echo $AD_PASSWORD | realm join --user="${DOMAIN_NAME^^}\\$AD_USERNAME" $(echo $ADMIN_SERVER | awk '{print $1}')
+
+# Restrict Domain controllers to join as per ADMIN_SERVER environment variable
+crudini --set /etc/sssd/sssd.conf "domain/${DOMAIN_NAME^^}" "ad_server" "$(echo ${ADMIN_SERVER} | sed 's#\s#,#g')"
+cat /etc/sssd/sssd.conf
 
 echo --------------------------------------------------
 echo "Starting: \"sssd\""
@@ -265,14 +264,14 @@ fi
 
 pam-auth-update
 
+net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
+
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
 echo --------------------------------------------------
 /etc/init.d/winbind stop
 /etc/init.d/nmbd stop
 /etc/init.d/smbd stop
-
-#net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
 
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'

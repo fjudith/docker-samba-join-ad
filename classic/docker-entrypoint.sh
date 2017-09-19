@@ -278,7 +278,7 @@ echo $AD_PASSWORD | kinit -V $AD_USERNAME@$REALM
 echo --------------------------------------------------
 echo 'Registering to Active Directory'
 echo --------------------------------------------------
-net ads join -U $AD_USERNAME%$AD_PASSWORD
+net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
 #wbinfo --online-status
 
 echo --------------------------------------------------
@@ -287,8 +287,6 @@ echo --------------------------------------------------
 /etc/init.d/nmbd stop
 /etc/init.d/smbd stop
 /etc/init.d/winbind stop
-
-net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
 
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'
