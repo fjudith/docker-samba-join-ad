@@ -21,6 +21,9 @@ RUN set -x && \
         samba \
         samba-dsdb-modules \
         samba-client \
+        samba-vfs-modules \
+        logrotate \
+        attr \
         libpam-mount
 
 
