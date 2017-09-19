@@ -272,7 +272,7 @@ echo --------------------------------------------------
 /etc/init.d/nmbd stop
 /etc/init.d/smbd stop
 
-net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
+#net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
 
 echo --------------------------------------------------
 echo 'Restarting Samba using supervisord'
