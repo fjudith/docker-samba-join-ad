@@ -21,6 +21,7 @@ RUN set -x && \
         winbind \
         libnss-winbind \
         samba \
+        samba-dsdb-modules \
         samba-client \
         libpam-mount \
         policykit-1 \
