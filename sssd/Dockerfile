@@ -20,6 +20,7 @@ RUN set -x && \
         adcli \
         winbind \
         libnss-winbind \
+        libpam-winbind \
         samba \
         samba-dsdb-modules \
         samba-client \

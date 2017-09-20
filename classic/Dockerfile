@@ -18,6 +18,7 @@ RUN set -x && \
         libpam-krb5 \
         winbind \
         libnss-winbind \
+        libpam-winbind \
         samba \
         samba-dsdb-modules \
         samba-client \
