@@ -264,7 +264,16 @@ fi
 
 pam-auth-update
 
+echo --------------------------------------------------
+echo 'Generating Kerberos ticket'
+echo --------------------------------------------------
+echo $AD_PASSWORD | kinit -V $AD_USERNAME@$REALM
+
+echo --------------------------------------------------
+echo 'Registering to Active Directory'
+echo --------------------------------------------------
 net ads join -U"$AD_USERNAME"%"$AD_PASSWORD"
+#wbinfo --online-status
 
 echo --------------------------------------------------
 echo 'Stopping Samba to enable handling by supervisord'
