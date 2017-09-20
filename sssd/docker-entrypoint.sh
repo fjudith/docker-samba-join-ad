@@ -83,6 +83,46 @@ echo $TZ | tee /etc/timezone
 dpkg-reconfigure --frontend noninteractive tzdata
 
 echo --------------------------------------------------
+echo "Setting up Kerberos realm: \"${DOMAIN_NAME^^}\""
+echo --------------------------------------------------
+if [[ ! -f /etc/krb5.conf.original ]]; then
+	mv /etc/krb5.conf /etc/krb5.conf.original
+fi
+
+cat > /etc/krb5.conf << EOL
+[logging]
+    default = FILE:/var/log/krb5.log 
+    kdc = FILE:/var/log/kdc.log 
+    admin_server = FILE:/var/log/kadmind.log
+
+[libdefaults]
+    default_realm = ${DOMAIN_NAME^^}
+    dns_lookup_realm = false
+    dns_lookup_kdc = false
+
+[realms]
+    ${DOMAIN_NAME^^} = {
+        kdc = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
+        admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
+        default_domain = ${DOMAIN_NAME^^}       
+    }
+    ${DOMAIN_NAME,,} = {
+        kdc = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
+        admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
+        default_domain = ${DOMAIN_NAME,,}
+    }
+    ${WORKGROUP^^} = {
+        kdc = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
+        admin_server = $(echo ${ADMIN_SERVER,,} | awk '{print $1}')
+        default_domain = ${DOMAIN_NAME^^}       
+    }
+    
+[domain_realm]
+    .${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
+    ${DOMAIN_NAME,,} = ${DOMAIN_NAME^^}
+EOL
+
+echo --------------------------------------------------
 echo "Setting up guest user credential: \"$GUEST_USERNAME\""
 echo --------------------------------------------------
 if [[ ! `grep $GUEST_USERNAME /etc/passwd` ]]; then
