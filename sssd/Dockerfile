@@ -7,7 +7,7 @@ ENV TERM=xterm
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get -y update && \
-    apt-get -y --no-install-recommends install \
+    apt-get -yqq --no-install-recommends install \
         resolvconf \
         dnsutils \
         vim \
