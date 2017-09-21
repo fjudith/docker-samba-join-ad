@@ -6,8 +6,7 @@ ENV TERM=xterm
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN set -x && \
-    apt-get -y update && \
+RUN apt-get -y update && \
     apt-get -y --no-install-recommends install \
         resolvconf \
         dnsutils \
